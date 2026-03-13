@@ -42,11 +42,16 @@ jobs:
           - {os: windows-latest, c_compiler: suncc}
           - {os: windows-latest, c_compiler: tcc}
           - {c_compiler: pgcc}  # TODO: нет установки под GitHub
-          - {c_compiler: pocc}  # TODO: проблемы с рабочим каталогом
+          # - {c_compiler: pocc}  # TODO: проблемы с рабочим каталогом
           - {c_compiler: suncc}  # TODO: нет установки под GitHub
           - {c_compiler: tcc}  # TODO: нет установки под GitHub
           # Давим из конфигурации репозитория, можно указать macos-latest
-          - os: ${{ vars.DISABLE_OS }}  # TODO: размножить
+          - os: ${{ vars.DISABLE_OS }}
+          - os: ${{ vars.DISABLE_OS1 }}
+          - os: ${{ vars.DISABLE_OS2 }}
+          - os: ${{ vars.DISABLE_CMP1 }}
+          - os: ${{ vars.DISABLE_CMP2 }}
+          - os: ${{ vars.DISABLE_CMP3 }}
         # Но всегда должна быть
         include: [{os: ubuntu-latest}, {c_compiler: gcc}]
 
@@ -68,7 +73,8 @@ jobs:
           # version: 2025.1
           verbose: true
       - if: matrix.c_compiler == 'lcc'
-        uses: Serge3leo/lcc-env-action@v0
+        # uses: Serge3leo/lcc-env-action@v0
+        uses: Serge3leo/lcc-env-action@lcc_1.27_29-e2k_1.0_1
         # with:
         #   lcc_version: 1.27.23
         #   qemu_e2k_version: "1.0"
@@ -78,10 +84,17 @@ jobs:
           # version: 6.73.1
           verbose: true
       - if: matrix.c_compiler == 'pocc'
-        uses: Serge3leo/pellesc-msys2@v0
+        # uses: Serge3leo/pellesc-msys2@v0
+        uses: Serge3leo/pellesc-msys2@bugCheckout
         with:
           # version: 12.0.2
           verbose: true
+
+      - name: Debug list
+        shell: bash
+        run: |
+          pwd
+          ls -la
 
       - name: Имена компиляторов с версиями, если необходимо
         shell: bash
