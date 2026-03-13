@@ -41,7 +41,7 @@ jobs:
           - {os: windows-latest, c_compiler: pgcc}
           - {os: windows-latest, c_compiler: suncc}
           - {os: windows-latest, c_compiler: tcc}
-          - {c_compiler: clang}  # TODO
+          # - {c_compiler: clang}  # TODO
           - {c_compiler: icx}  # TODO
           - {c_compiler: lcc}  # TODO
           - {c_compiler: occ}  # TODO
@@ -182,7 +182,7 @@ jobs:
         working-directory: ${{ github.workspace }}/build
         shell: bash
         run: |
-          if "$c_compiler" = "cl" ; then
+          if [ "$c_compiler" = "cl" ] ; then
             d="$build_type"
           fi
           for h in ./hello/$d/hello* ; do
