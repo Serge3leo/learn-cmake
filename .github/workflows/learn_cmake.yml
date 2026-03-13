@@ -42,10 +42,11 @@ jobs:
           - {os: windows-latest, c_compiler: suncc}
           - {os: windows-latest, c_compiler: tcc}
           - {c_compiler: pgcc}  # TODO: нет установки под GitHub
+          - {c_compiler: pocc}  # TODO: проблемы с рабочим каталогом
           - {c_compiler: suncc}  # TODO: нет установки под GitHub
           - {c_compiler: tcc}  # TODO: нет установки под GitHub
           # Давим из конфигурации репозитория, можно указать macos-latest
-          - os: ${{ vars.DISABLE_OS }}
+          - os: ${{ vars.DISABLE_OS }}  # TODO: размножить
         # Но всегда должна быть
         include: [{os: ubuntu-latest}, {c_compiler: gcc}]
 
