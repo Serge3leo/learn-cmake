@@ -74,8 +74,7 @@ jobs:
           # version: 2025.1
           verbose: true
       - if: matrix.c_compiler == 'lcc'
-        # uses: Serge3leo/lcc-env-action@v0
-        uses: Serge3leo/lcc-env-action@lcc_1.27_29-e2k_1.0_1
+        uses: Serge3leo/lcc-env-action@v0
         # with:
         #   lcc_version: 1.27.23
         #   qemu_e2k_version: "1.0"
@@ -85,10 +84,9 @@ jobs:
           # version: 6.73.1
           verbose: true
       - if: matrix.c_compiler == 'pocc'
-        # uses: Serge3leo/pellesc-msys2@v0
-        uses: Serge3leo/pellesc-msys2@bugCheckout
+        uses: Serge3leo/pellesc-msys2@v0
         with:
-          # version: 12.0.2  # Needed windows-2022
+          # version: 12.0.2  # WARNING: Needed windows-2022
           verbose: true
 
       - name: Имена компиляторов с версиями, если необходимо
