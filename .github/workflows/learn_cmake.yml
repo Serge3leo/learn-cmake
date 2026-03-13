@@ -16,7 +16,7 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     strategy:
-      fail-fast: false
+      fail-fast: true
 
       matrix:
         os: [macos-latest, ubuntu-latest, windows-latest]
@@ -41,12 +41,7 @@ jobs:
           - {os: windows-latest, c_compiler: pgcc}
           - {os: windows-latest, c_compiler: suncc}
           - {os: windows-latest, c_compiler: tcc}
-          # - {c_compiler: clang}  # TODO
-          - {c_compiler: icx}  # TODO
-          # - {c_compiler: lcc}  # TODO
-          # - {c_compiler: occ}  # TODO
           - {c_compiler: pgcc}  # TODO: нет установки под GitHub
-          - {c_compiler: pocc}  # TODO
           - {c_compiler: suncc}  # TODO: нет установки под GitHub
           - {c_compiler: tcc}  # TODO: нет установки под GitHub
           # Давим из конфигурации репозитория, можно указать macos-latest
