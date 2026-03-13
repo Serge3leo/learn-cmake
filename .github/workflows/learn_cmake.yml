@@ -87,7 +87,7 @@ jobs:
         # uses: Serge3leo/pellesc-msys2@v0
         uses: Serge3leo/pellesc-msys2@bugCheckout
         with:
-          # version: 12.0.2
+          version: 12.0.2
           verbose: true
 
       - name: Debug list
