@@ -47,7 +47,7 @@ jobs:
           - c_compiler: tcc  # TODO: нет установки под GitHub
           # Давим из конфигурации репозитория, можно указать macos-latest
           - os: ${{ vars.DISABLE_OS1 }}
-          - os: ${{ vars.DISABLE_OS2 }}
+          # - os: ${{ vars.DISABLE_OS2 }}
           # - c_compiler: ${{ vars.DISABLE_CMP1 }}
           # - c_compiler: ${{ vars.DISABLE_CMP2 }}
           # - c_compiler: ${{ vars.DISABLE_CMP3 }}
