@@ -165,9 +165,9 @@ jobs:
       - name: Конфигурация
         shell: bash
         run: >
-          cmake -B build
-          -DCMAKE_C_COMPILER="$c_compiler" $cxx_flags $gen_flags
-          -DCMAKE_BUILD_TYPE=$build_type $cmake_add -S .
+          eval "cmake -B build
+          -DCMAKE_C_COMPILER=\"$c_compiler\" $cxx_flags $gen_flags
+          -DCMAKE_BUILD_TYPE=$build_type $cmake_add -S ."
 
       - name: Сборка
         shell: bash
