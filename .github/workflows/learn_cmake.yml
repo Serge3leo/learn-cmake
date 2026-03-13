@@ -42,13 +42,19 @@ jobs:
           - {os: windows-latest, c_compiler: suncc}
           - {os: windows-latest, c_compiler: tcc}
           - {c_compiler: pgcc}  # TODO: нет установки под GitHub
-          - {c_compiler: pocc}  # TODO: проблемы с рабочим каталогом
           - {c_compiler: suncc}  # TODO: нет установки под GitHub
           - {c_compiler: tcc}  # TODO: нет установки под GitHub
           # Давим из конфигурации репозитория, можно указать macos-latest
-          - os: ${{ vars.DISABLE_OS }}  # TODO: размножить
+          - os: ${{ vars.DISABLE_OS1 }}
+          - os: ${{ vars.DISABLE_OS2 }}
+          - c_compiler: ${{ vars.DISABLE_CMP1 }}
+          - c_compiler: ${{ vars.DISABLE_CMP2 }}
+          - c_compiler: ${{ vars.DISABLE_CMP3 }}
+          - c_compiler: ${{ vars.DISABLE_CMP4 }}
+          - c_compiler: ${{ vars.DISABLE_CMP5 }}
+          - c_compiler: ${{ vars.DISABLE_CMP6 }}
         # Но всегда должна быть
-        include: [{os: ubuntu-latest}, {c_compiler: gcc}]
+        include: [{os: ubuntu-latest, c_compiler: gcc}]
 
     steps:
       - uses: actions/checkout@v4
@@ -80,13 +86,16 @@ jobs:
       - if: matrix.c_compiler == 'pocc'
         uses: Serge3leo/pellesc-msys2@v0
         with:
-          # version: 12.0.2
+          # version: 12.0.2  # WARNING: Needed windows-2022
           verbose: true
 
       - name: Имена компиляторов с версиями, если необходимо
         shell: bash
         run: |
           build_type="${{ matrix.build_type }}"
+          if [ -z "$build_type" ] ; then
+            build_type=Release
+          fi
           c_compiler="${{ matrix.c_compiler }}"
           case "$c_compiler" in
           clang)
