@@ -41,17 +41,19 @@ jobs:
           - {os: windows-latest, c_compiler: pgcc}
           - {os: windows-latest, c_compiler: suncc}
           - {os: windows-latest, c_compiler: tcc}
-          - {c_compiler: pgcc}  # TODO: нет установки под GitHub
-          # - {c_compiler: pocc}  # TODO: проблемы с рабочим каталогом
-          - {c_compiler: suncc}  # TODO: нет установки под GitHub
-          - {c_compiler: tcc}  # TODO: нет установки под GitHub
+          - c_compiler: pgcc  # TODO: нет установки под GitHub
+          # - {c_compiler: pocc  # TODO: проблемы с рабочим каталогом
+          - c_compiler: suncc  # TODO: нет установки под GitHub
+          - c_compiler: tcc  # TODO: нет установки под GitHub
           # Давим из конфигурации репозитория, можно указать macos-latest
-          - os: ${{ vars.DISABLE_OS }}
           - os: ${{ vars.DISABLE_OS1 }}
           - os: ${{ vars.DISABLE_OS2 }}
-          - os: ${{ vars.DISABLE_CMP1 }}
-          - os: ${{ vars.DISABLE_CMP2 }}
-          - os: ${{ vars.DISABLE_CMP3 }}
+          - c_compiler: ${{ vars.DISABLE_CMP1 }}
+          - c_compiler: ${{ vars.DISABLE_CMP2 }}
+          - c_compiler: ${{ vars.DISABLE_CMP3 }}
+          - c_compiler: ${{ vars.DISABLE_CMP4 }}
+          - c_compiler: ${{ vars.DISABLE_CMP5 }}
+          - c_compiler: ${{ vars.DISABLE_CMP6 }}
         # Но всегда должна быть
         include: [{os: ubuntu-latest}, {c_compiler: gcc}]
 
