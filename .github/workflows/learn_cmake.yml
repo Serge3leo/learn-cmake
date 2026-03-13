@@ -42,7 +42,6 @@ jobs:
           - {os: windows-latest, c_compiler: suncc}
           - {os: windows-latest, c_compiler: tcc}
           - {c_compiler: pgcc}  # TODO: нет установки под GitHub
-          # - {c_compiler: pocc}  # TODO: проблемы с рабочим каталогом
           - {c_compiler: suncc}  # TODO: нет установки под GitHub
           - {c_compiler: tcc}  # TODO: нет установки под GitHub
           # Давим из конфигурации репозитория, можно указать macos-latest
@@ -91,12 +90,6 @@ jobs:
         with:
           # version: 12.0.2  # Needed windows-2022
           verbose: true
-
-      - name: Debug list
-        shell: bash
-        run: |
-          pwd
-          ls -la
 
       - name: Имена компиляторов с версиями, если необходимо
         shell: bash
