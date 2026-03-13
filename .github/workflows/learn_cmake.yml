@@ -19,7 +19,7 @@ jobs:
       fail-fast: true
 
       matrix:
-        os: [macos-latest, ubuntu-latest, windows-2022]
+        os: [macos-latest, ubuntu-latest, windows-latest]
         c_compiler: [cl, clang, gcc, icx, lcc, occ, pgcc, pocc, suncc, tcc]
         build_type: [Release]
         exclude:
@@ -34,13 +34,13 @@ jobs:
           - {os: ubuntu-latest, c_compiler: cl}
           - {os: ubuntu-latest, c_compiler: occ}
           - {os: ubuntu-latest, c_compiler: pocc}
-          - {os: windows-2022, c_compiler: clang}
-          - {os: windows-2022, c_compiler: gcc}
-          - {os: windows-2022, c_compiler: icx}
-          - {os: windows-2022, c_compiler: lcc}
-          - {os: windows-2022, c_compiler: pgcc}
-          - {os: windows-2022, c_compiler: suncc}
-          - {os: windows-2022, c_compiler: tcc}
+          - {os: windows-latest, c_compiler: clang}
+          - {os: windows-latest, c_compiler: gcc}
+          - {os: windows-latest, c_compiler: icx}
+          - {os: windows-latest, c_compiler: lcc}
+          - {os: windows-latest, c_compiler: pgcc}
+          - {os: windows-latest, c_compiler: suncc}
+          - {os: windows-latest, c_compiler: tcc}
           - {c_compiler: pgcc}  # TODO: нет установки под GitHub
           # - {c_compiler: pocc}  # TODO: проблемы с рабочим каталогом
           - {c_compiler: suncc}  # TODO: нет установки под GitHub
@@ -87,7 +87,7 @@ jobs:
         # uses: Serge3leo/pellesc-msys2@v0
         uses: Serge3leo/pellesc-msys2@bugCheckout
         with:
-          version: 12.0.2  # Needed windows-2022
+          # version: 12.0.2  # Needed windows-2022
           verbose: true
 
       - name: Debug list
