@@ -55,7 +55,7 @@ jobs:
           # - c_compiler: ${{ vars.DISABLE_CMP5 }}
           # - c_compiler: ${{ vars.DISABLE_CMP6 }}
         # Но всегда должна быть
-        include: [{os: ubuntu-latest}, {c_compiler: gcc}]
+        include: [{os: ubuntu-latest, c_compiler: gcc}]
 
     steps:
       - uses: actions/checkout@v4
