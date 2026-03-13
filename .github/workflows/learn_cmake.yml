@@ -102,6 +102,9 @@ jobs:
         shell: bash
         run: |
           build_type="${{ matrix.build_type }}"
+          if [ -z "$build_type" ] ; then
+            build_type=Release
+          fi
           c_compiler="${{ matrix.c_compiler }}"
           case "$c_compiler" in
           clang)
