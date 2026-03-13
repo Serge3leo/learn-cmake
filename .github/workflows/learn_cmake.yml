@@ -1,0 +1,186 @@
+---
+# vim:set sw=2 ts=8 et fileencoding=utf8:
+# SPDX-License-Identifier: BSD-2-Clause
+# SPDX-FileCopyrightText: 2026 Сергей Леонтьев (leo@sai.msu.ru)
+
+name: Рабочий процесс CMake GitHub YAML
+
+on:  # yamllint disable-line rule:truthy
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: true
+
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+        c_compiler: [cl, clang, gcc, icx, lcc, occ, pgcc, pocc, suncc, tcc]
+        build_type: [Release]
+        exclude:
+          - {os: macos-latest, c_compiler: cl}
+          - {os: macos-latest, c_compiler: icx}
+          - {os: macos-latest, c_compiler: lcc}
+          - {os: macos-latest, c_compiler: occ}
+          - {os: macos-latest, c_compiler: pgcc}
+          - {os: macos-latest, c_compiler: pocc}
+          - {os: macos-latest, c_compiler: suncc}
+          - {os: macos-latest, c_compiler: tcc}
+          - {os: ubuntu-latest, c_compiler: cl}
+          - {os: ubuntu-latest, c_compiler: occ}
+          - {os: ubuntu-latest, c_compiler: pocc}
+          - {os: windows-latest, c_compiler: clang}
+          - {os: windows-latest, c_compiler: gcc}
+          - {os: windows-latest, c_compiler: icx}
+          - {os: windows-latest, c_compiler: lcc}
+          - {os: windows-latest, c_compiler: pgcc}
+          - {os: windows-latest, c_compiler: suncc}
+          - {os: windows-latest, c_compiler: tcc}
+          - {c_compiler: pgcc}  # TODO: нет установки под GitHub
+          - {c_compiler: pocc}  # TODO: проблемы с рабочим каталогом
+          - {c_compiler: suncc}  # TODO: нет установки под GitHub
+          - {c_compiler: tcc}  # TODO: нет установки под GitHub
+          # Давим из конфигурации репозитория, можно указать macos-latest
+          - os: ${{ vars.DISABLE_OS }}  # TODO: размножить
+        # Но всегда должна быть
+        include: [{os: ubuntu-latest}, {c_compiler: gcc}]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Lint
+        if: runner.os != 'Windows'  # И так притормаживает
+        run: |
+          python -m pip install yamllint
+          python -m yamllint --list-file .
+          python -m yamllint .
+
+      - if: matrix.c_compiler == 'cl'
+        uses: ilammy/msvc-dev-cmd@v1
+      - if: matrix.c_compiler == 'icx'
+        uses: Serge3leo/oneapi-setup@v0
+        with:
+          # version: 2025.1
+          verbose: true
+      - if: matrix.c_compiler == 'lcc'
+        uses: Serge3leo/lcc-env-action@v0
+        # with:
+        #   lcc_version: 1.27.23
+        #   qemu_e2k_version: "1.0"
+      - if: matrix.c_compiler == 'occ'
+        uses: Serge3leo/orangec-msys2@v0
+        with:
+          # version: 6.73.1
+          verbose: true
+      - if: matrix.c_compiler == 'pocc'
+        uses: Serge3leo/pellesc-msys2@v0
+        with:
+          # version: 12.0.2
+          verbose: true
+
+      - name: Имена компиляторов с версиями, если необходимо
+        shell: bash
+        run: |
+          build_type="${{ matrix.build_type }}"
+          c_compiler="${{ matrix.c_compiler }}"
+          case "$c_compiler" in
+          clang)
+            c_compiler=""
+            # TODO macOS $(brew --prefix llvm@18)/bin/clang
+            for c in clang{-{18,17,16},} ; do
+              if type $c > /dev/null ; then
+                c_compiler=$c
+                cxx=`echo $c | sed 's/clang/clang++/'`
+                break
+              fi
+            done
+            ;;
+          gcc)
+            c_compiler=""
+            for c in gcc{-{15,14,13},} ; do
+              if type $c > /dev/null ; then
+                c_compiler=$c
+                cxx=`echo $c | sed 's/gcc/g++/'`
+                break
+              fi
+            done
+            ;;
+          icx)
+            cxx=icpx
+            ;;
+          lcc)
+            cxx=l++
+            cross_emul=e2k
+            cmake_add="-DCMAKE_CROSSCOMPILING=ON \
+                       -DCMAKE_SYSTEM_NAME=Generic-ELF \
+                       -DCMAKE_CROSSCOMPILING_EMULATOR=$cross_emul"
+            ;;
+          occ)
+            cxx=occ
+            gen_flags="-G 'MSYS Makefiles'"
+            ;;
+          pgcc)
+            cxx=pgc++
+            ;;
+          pocc)
+            cxx=cxx_disable
+            gen_flags="-G 'MSYS Makefiles'"
+            ;;
+          suncc)
+            cxx=sunCC
+            ;;
+          tcc)
+            cxx=cxx_disable
+            ;;
+          *)
+            cxx="$c_compiler"
+          esac
+          if [ -z "$cxx" ] ; then
+            echo "Неудача определения C++-компилятора" 1>&2
+            exit 5
+          fi
+          if [ "$cxx" != "cxx_disable" ] ; then
+            cxx_flags="-DCMAKE_CXX_COMPILER=$cxx"
+          else
+            cxx_flags="-DLEARN_CMAKE_CXX_ENABLE=OFF"
+          fi
+          cat >> $GITHUB_ENV <<_end_of_github_env_
+          build_type=$build_type
+          c_compiler=$c_compiler
+          cxx_flags=$cxx_flags
+          gen_flags=$gen_flags
+          cross_emul=$cross_emul
+          cmake_add=$cmake_add
+          _end_of_github_env_
+
+      - name: Конфигурация
+        shell: bash
+        run: >
+          eval "cmake -B build
+          -DCMAKE_C_COMPILER=\"$c_compiler\" $cxx_flags $gen_flags
+          -DCMAKE_BUILD_TYPE=$build_type $cmake_add -S ."
+
+      - name: Сборка
+        shell: bash
+        run: cmake --build build --config $build_type
+
+      - name: Тесты
+        working-directory: ${{ github.workspace }}/build
+        shell: bash
+        run: ctest --output-on-failure --build-config $build_type
+
+      - name: Контрольный запуск
+        working-directory: ${{ github.workspace }}/build
+        shell: bash
+        run: |
+          if [ "$c_compiler" = "cl" ] ; then
+            d="$build_type"
+          fi
+          for h in ./hello/$d/hello* ; do
+            $cross_emul "$h"
+          done
