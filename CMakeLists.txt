@@ -60,7 +60,15 @@ endif ()
 add_subdirectory(hello)
 add_subdirectory(win32gui)
 add_subdirectory(static)
-add_subdirectory(dynamic)
+if (LEARN_CMAKE_FORCE_DYNAMIC OR
+    NOT (CMAKE_C_COMPILER_ID STREQUAL OrangeC OR  # TODO Input file 'FLAGS'...
+         CMAKE_C_COMPILER_ID STREQUAL PellesC OR  # TODO Unknown option: /shared
+         CMAKE_C_COMPILER_ID STREQUAL TinyCC))  # libdfoo.so: cannot open...
+    # Так же, LCC: ADD_LIBRARY called with SHARED option but the target
+    # platform does not support dynamic linking.  Building a STATIC library
+    # instead.
+    add_subdirectory(dynamic)
+endif ()
 add_subdirectory(asm)
 
 enable_testing()
