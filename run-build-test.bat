@@ -44,14 +44,8 @@ if errorlevel 1 exit /b
 cd %build_output_dir%
 ctest --build-config %build_type%
 if errorlevel 1 exit /b
-if "%generator%" == "MSYS Makefiles" (
-    hello\hello
-    if errorlevel 1 exit /b
-    hello\hello++
-    if errorlevel 1 exit /b
-) else (
-    hello\%build_type%\hello
-    if errorlevel 1 exit /b
-    hello\%build_type%\hello++
+for /r %%e in (hello*.exe) do (
+    echo %%e
+    %%e
     if errorlevel 1 exit /b
 )
