@@ -58,7 +58,11 @@ if (LEARN_CMAKE_CXX_ENABLE)
 endif ()
 
 add_subdirectory(hello)
-add_subdirectory(win32gui)
+if(WIN32 AND (LEARN_CMAKE_FORCE_WIN32 OR
+   NOT CMAKE_C_COMPILER_ID STREQUAL PellesC))
+    # TODO: PellesC #error: <windows.h> requires the /Ze compiler option
+    add_subdirectory(win32gui)
+endif ()
 add_subdirectory(static)
 if (LEARN_CMAKE_FORCE_DYNAMIC OR
     NOT (CMAKE_C_COMPILER_ID STREQUAL OrangeC OR  # TODO Input file 'FLAGS'...
