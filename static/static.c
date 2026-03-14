@@ -3,15 +3,18 @@
 // SPDX-FileCopyrightText: 2026 Сергей Леонтьев (leo@sai.msu.ru)
 
 #if defined(__cplusplus)
-    #include <cassert>
+    #include <cstdlib>
 #else
-    #include <assert.h>
+    #include <stdlib.h>
 #endif
 
 #include "foo.h"
 
 int main(void) {
-    assert(boo() == FOO_STATIC);
-    assert(baz() == FOO_STATIC);
-    printf("Хорь, Бу и Баз из статического Фу\n");
+    if (boo() == FOO_STATIC &&
+        baz() == FOO_STATIC) {
+        printf("Хорь, Бу и Баз из статического Фу\n");
+    } else {
+        return EXIT_FAILURE;
+    }
 }

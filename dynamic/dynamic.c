@@ -3,15 +3,18 @@
 // SPDX-FileCopyrightText: 2026 Сергей Леонтьев (leo@sai.msu.ru)
 
 #if defined(__cplusplus)
-    #include <cassert>
+    #include <cstdlib>
 #else
-    #include <assert.h>
+    #include <stdlib.h>
 #endif
 
 #include "dfoo.h"
 
 int main(void) {
-    assert(boo() == DFOO_DYNAMIC);
-    assert(baz() == DFOO_DYNAMIC);
-    printf("Хорь, Бу и Баз из динамического Фу\n");
+    if (boo() == DFOO_DYNAMIC &&
+        baz() == DFOO_DYNAMIC) {
+        printf("Хорь, Бу и Баз из динамического Фу\n");
+    } else {
+        return EXIT_FAILURE;
+    }
 }
