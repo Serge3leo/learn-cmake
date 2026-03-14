@@ -6,7 +6,7 @@
 set -e
 
 build_type=${build_type:-Release}
-build_output_dir="build/`uname -s`_${c_compiler}_${cxx_compiler}"
+build_output_dir="build/`uname -s`_$1_$2"
 if [ -z "$1" ] ; then
     echo "Использование: $0 <C-компилятор> [<C++-компилятор>]" 1>&2
     exit 3
