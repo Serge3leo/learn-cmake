@@ -12,7 +12,7 @@ on:  # yamllint disable-line rule:truthy
     branches: [main]
 
 env:
-  VERBOSE=1
+  VERBOSE: 1
 
 jobs:
   build:
