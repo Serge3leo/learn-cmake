@@ -1,4 +1,4 @@
-[![Рабочий процесс изучения GitHub YAML за Y минут](https://github.com/Serge3leo/learn-github-yaml-in-y-minutes/actions/workflows/learn_github_yaml.yml/badge.svg?branch=main)](https://github.com/Serge3leo/learn-github-yaml-in-y-minutes/actions/workflows/learn_github_yaml.yml)
+[![Рабочий процесс CMake GitHub](https://github.com/Serge3leo/learn-cmake/actions/workflows/learn_cmake.yml/badge.svg?branch=main)](https://github.com/Serge3leo/learn-cmake/actions/workflows/learn_cmake.yml)
 
 # Learn CMake on GitHub multiple platforms (in Russian)
 My lessons of CMake GitHub Actions workflows.

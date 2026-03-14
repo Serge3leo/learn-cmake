@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # SPDX-FileCopyrightText: 2026 Сергей Леонтьев (leo@sai.msu.ru)
 
-name: Рабочий процесс CMake GitHub YAML
+name: Рабочий процесс CMake GitHub
 
 on:  # yamllint disable-line rule:truthy
   push:
