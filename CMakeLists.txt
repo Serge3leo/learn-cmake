@@ -46,7 +46,15 @@ endif ()
 if (LEARN_CMAKE_CXX_ENABLE)
     enable_language(CXX)
 
-    set(CMAKE_CXX_STANDARD 14)
+    #set(CMAKE_CXX_STANDARD 14)
+    #set(CMAKE_CXX_STANDARD 17)
+    set(CMAKE_CXX_STANDARD 23)
+
+    set(CMAKE_CXX_EXTENSIONS OFF)  # Для ...
+    #set(CMAKE_CXX_EXTENSIONS ON)  # Для ...
+
+    message("CMAKE_CXX_COMPILE_FEATURES=${CMAKE_CXX_COMPILE_FEATURES}")
+    message("CMAKE_CXX_EXTENSIONS_DEFAULT=${CMAKE_CXX_EXTENSIONS_DEFAULT}")
 endif ()
 
 add_subdirectory(hello)
