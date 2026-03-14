@@ -11,6 +11,11 @@ target_compile_definitions(dfoo PRIVATE RESPONSE=DFOO_DYNAMIC)
 
 add_executable(dynamic ${HDRS} dynamic.c)
 target_link_libraries(dynamic dfoo)
-add_test(NAME dynamic COMMAND dynamic)
+if (CMAKE_C_COMPILER_ID STREQUAL TinyCC)  # TODO: libdfoo.so: cannot open...
+    add_test(NAME dynamic
+             COMMAND env LD_LIBRARY_PATH=${CMAKE_CURRENT_BINARY_DIR} ./dynamic)
+else ()
+    add_test(NAME dynamic COMMAND dynamic)
+endif ()
 
 enable_testing()
