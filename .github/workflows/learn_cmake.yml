@@ -22,7 +22,7 @@ jobs:
       fail-fast: true
 
       matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
+        os: [macos-15-intel, ubuntu-latest, windows-latest]
         c_compiler: [cl, clang, gcc, icx, lcc, occ, pgcc, pocc, suncc, tcc]
         build_type: [Release]
         exclude:
