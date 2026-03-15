@@ -33,4 +33,4 @@ jobs:
       - uses: opengrabeso/clean-cache@v1.1.0
         with:
           post: true
-          keep: 1
+          keep: 2
