@@ -5,22 +5,9 @@
 #ifndef FOO_H_7988
 #define FOO_H_7988
 
-#if defined(__cplusplus)
-    #include <cstdio>
-#else
-    #include <stdio.h>
-#endif
-
 #define FOO_STATIC  (1917)
-
-#if defined(__cplusplus)
-extern "C" {
-#endif
 
 extern int boo(void);
 extern int baz(void);
 
-#if defined(__cplusplus)
-}
-#endif
 #endif  // FOO_H_7988

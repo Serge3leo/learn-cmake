@@ -7,8 +7,8 @@ set(HDRS foo.h)
 add_library(foo STATIC ${HDRS} boo.c baz.c)
 target_compile_definitions(foo PRIVATE RESPONSE=FOO_STATIC)
 
-add_executable(static ${HDRS} static.c)
-target_link_libraries(static foo)
-add_test(NAME static COMMAND static)
+add_executable(case_static ${HDRS} case_static.c)
+target_link_libraries(case_static foo)
+add_test(NAME case_static COMMAND case_static)
 
 enable_testing()

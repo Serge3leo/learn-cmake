@@ -2,11 +2,13 @@
 // SPDX-License-Identifier: BSD-2-Clause
 // SPDX-FileCopyrightText: 2026 Сергей Леонтьев (leo@sai.msu.ru)
 
-#include <stdio.h>
+#include <stddef.h>
 
-#include "foo.h"
+#ifndef FOO_H_8851
+#define FOO_H_8851
 
-int baz(void) {
-    printf("%s: Я Баз из статического Фу\n", __func__);
-    return RESPONSE;
-}
+#define FOO_ASM  (1922)
+
+extern size_t foo(void);
+
+#endif  // FOO_H_8851
