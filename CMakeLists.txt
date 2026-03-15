@@ -10,14 +10,8 @@ project(learn_cmake
         HOMEPAGE_URL https://github.com/Serge3leo/learn-cmake
         LANGUAGES C
 )
-
-#set(CMAKE_C_STANDARD 99)  # clang/gcc/icx/lcc/nvc/pgcc
-#set(CMAKE_C_STANDARD 11)
-set(CMAKE_C_STANDARD 17)
-#set(CMAKE_C_STANDARD 23)  # Увеличивает __STDC_VERSION__
-# На tcc эти ключи не влияют
-set(CMAKE_C_EXTENSIONS OFF)  # Для gcc/lcc: -std=c17
-#set(CMAKE_C_EXTENSIONS ON)  # Для occ/suncc - нет реакции
+include(workarounds/OrangeC.cmake)  # WARNING: without CMAKE_C_COMPILE_FEATURES
+set(CMAKE_C_STANDARD 23)
 
 message("CMAKE_C_COMPILE_FEATURES=${CMAKE_C_COMPILE_FEATURES}")
 message("CMAKE_C_EXTENSIONS_DEFAULT=${CMAKE_C_EXTENSIONS_DEFAULT}")
@@ -45,14 +39,7 @@ if (CMAKE_C_COMPILER_ID STREQUAL PellesC OR
 endif ()
 if (LEARN_CMAKE_CXX_ENABLE)
     enable_language(CXX)
-
-    #set(CMAKE_CXX_STANDARD 14)
-    #set(CMAKE_CXX_STANDARD 17)
     set(CMAKE_CXX_STANDARD 23)
-
-    set(CMAKE_CXX_EXTENSIONS OFF)  # Для ...
-    #set(CMAKE_CXX_EXTENSIONS ON)  # Для ...
-
     message("CMAKE_CXX_COMPILE_FEATURES=${CMAKE_CXX_COMPILE_FEATURES}")
     message("CMAKE_CXX_EXTENSIONS_DEFAULT=${CMAKE_CXX_EXTENSIONS_DEFAULT}")
 endif ()
@@ -65,12 +52,15 @@ if(WIN32 AND (LEARN_CMAKE_FORCE_WIN32 OR
 endif ()
 add_subdirectory(static)
 if (LEARN_CMAKE_FORCE_DYNAMIC OR
-    NOT (CMAKE_C_COMPILER_ID STREQUAL OrangeC OR  # TODO Input file 'FLAGS'...
-         CMAKE_C_COMPILER_ID STREQUAL PellesC))  # TODO Unknown option: /shared
+    NOT CMAKE_C_COMPILER_ID STREQUAL PellesC)  # TODO Unknown option: /shared
     # Так же, LCC: ADD_LIBRARY called with SHARED option but the target
     # platform does not support dynamic linking.  Building a STATIC library
     # instead.
     add_subdirectory(dynamic)
+else ()
+    foreach (lang IN ITEMS C CXX ASM)
+        message("CMAKE_${lang}_CREATE_SHARED_LIBRARY='${CMAKE_${lang}_CREATE_SHARED_LIBRARY}'")
+    endforeach ()
 endif ()
 if(LEARN_CMAKE_FORCE_ASM OR
    NOT CMAKE_C_COMPILER_ID STREQUAL PellesC)
