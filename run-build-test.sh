@@ -5,6 +5,8 @@
 
 set -e
 
+cd "`dirname \"$0\"`"
+
 build_type=${build_type:-Release}
 build_output_dir="build/`uname -s`_$1_$2"
 if [ -z "$1" ] ; then

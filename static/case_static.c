@@ -2,19 +2,19 @@
 // SPDX-License-Identifier: BSD-2-Clause
 // SPDX-FileCopyrightText: 2026 Сергей Леонтьев (leo@sai.msu.ru)
 
-#if defined(__cplusplus)
-    #include <cstdlib>
-#else
-    #include <stdlib.h>
-#endif
+#include <stdio.h>
+#include <stdlib.h>
 
 #include "foo.h"
 
 int main(void) {
-    if (boo() == FOO_STATIC &&
-        baz() == FOO_STATIC) {
+    if (boo() == FOO_STATIC && baz() == FOO_STATIC) {
         printf("Хорь, Бу и Баз из статического Фу\n");
     } else {
+        printf("FAIL: неизвестный Бу (%d) или Баз (%d)\n", boo(), baz());
         return EXIT_FAILURE;
     }
+    #if __SUNPRO_C  // TODO не понял
+        return 0;
+    #endif
 }

@@ -5,22 +5,9 @@
 #ifndef DFOO_H_1422
 #define DFOO_H_1422
 
-#if defined(__cplusplus)
-    #include <cstdio>
-#else
-    #include <stdio.h>
-#endif
-
-#define DFOO_DYNAMIC  (1917)
-
-#if defined(__cplusplus)
-extern "C" {
-#endif
+#define DFOO_DYNAMIC  (1945)
 
 extern int boo(void);
 extern int baz(void);
 
-#if defined(__cplusplus)
-}
-#endif
 #endif  // DFOO_H_1422

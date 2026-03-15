@@ -72,6 +72,9 @@ if (LEARN_CMAKE_FORCE_DYNAMIC OR
     # instead.
     add_subdirectory(dynamic)
 endif ()
-add_subdirectory(asm)
+if(LEARN_CMAKE_FORCE_ASM OR
+   NOT CMAKE_C_COMPILER_ID STREQUAL PellesC)
+    add_subdirectory(asm)
+endif ()
 
 enable_testing()

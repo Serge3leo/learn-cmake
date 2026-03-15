@@ -9,13 +9,13 @@ set(HDRS dfoo.h)
 add_library(dfoo SHARED ${HDRS} boo.c baz.c)
 target_compile_definitions(dfoo PRIVATE RESPONSE=DFOO_DYNAMIC)
 
-add_executable(dynamic ${HDRS} dynamic.c)
-target_link_libraries(dynamic dfoo)
+add_executable(case_dynamic ${HDRS} case_dynamic.c)
+target_link_libraries(case_dynamic dfoo)
 if (CMAKE_C_COMPILER_ID STREQUAL TinyCC)  # TODO: libdfoo.so: cannot open...
-    add_test(NAME dynamic
-             COMMAND env LD_LIBRARY_PATH=${CMAKE_CURRENT_BINARY_DIR} ./dynamic)
+    add_test(NAME case_dynamic
+        COMMAND env LD_LIBRARY_PATH=${CMAKE_CURRENT_BINARY_DIR} ./case_dynamic)
 else ()
-    add_test(NAME dynamic COMMAND dynamic)
+    add_test(NAME case_dynamic COMMAND case_dynamic)
 endif ()
 
 enable_testing()
