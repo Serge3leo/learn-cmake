@@ -2,6 +2,10 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # SPDX-FileCopyrightText: 2026 Сергей Леонтьев (leo@sai.msu.ru)
 
+include(workarounds/LCC.cmake OPTIONAL)
+include(workarounds/OrangeC.cmake OPTIONAL)  # Обход CMAKE_C_COMPILE_FEATURES
+include(workarounds/TinyCC.cmake OPTIONAL)
+
 cmake_minimum_required (VERSION 3.25)
 project(learn_cmake
         VERSION 0.1.0
@@ -10,11 +14,7 @@ project(learn_cmake
         HOMEPAGE_URL https://github.com/Serge3leo/learn-cmake
         LANGUAGES C
 )
-     # WARNING: нижеследующий обход не решает CMAKE_C_COMPILE_FEATURES
-     # возможно будет достаточно проверить по имени и установить до?
-include(workarounds/LCC.cmake)
-include(workarounds/OrangeC.cmake)
-include(workarounds/TinyCC.cmake)
+include(workarounds/OrangeC.cmake OPTIONAL)  # Обход DLL
 
 set(CMAKE_C_STANDARD 23)
 
@@ -44,8 +44,6 @@ if (CMAKE_C_COMPILER_ID STREQUAL PellesC OR
 endif ()
 if (LEARN_CMAKE_CXX_ENABLE)
     enable_language(CXX)
-    include(workarounds/LCC.cmake)
-    include(workarounds/OrangeC.cmake)
     set(CMAKE_CXX_STANDARD 23)
     message("CMAKE_CXX_COMPILE_FEATURES=${CMAKE_CXX_COMPILE_FEATURES}")
     message("CMAKE_CXX_EXTENSIONS_DEFAULT=${CMAKE_CXX_EXTENSIONS_DEFAULT}")
