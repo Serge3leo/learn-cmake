@@ -26,14 +26,14 @@ jobs:
         c_compiler: [cl, clang, gcc, icx, lcc, occ, pgcc, pocc, suncc, tcc]
         build_type: [Release]
         exclude:
-          - {os: macos-latest, c_compiler: cl}
-          - {os: macos-latest, c_compiler: icx}
-          - {os: macos-latest, c_compiler: lcc}
-          - {os: macos-latest, c_compiler: occ}
-          - {os: macos-latest, c_compiler: pgcc}
-          - {os: macos-latest, c_compiler: pocc}
-          - {os: macos-latest, c_compiler: suncc}
-          - {os: macos-latest, c_compiler: tcc}
+          - {os: macos-15-intel, c_compiler: cl}
+          - {os: macos-15-intel, c_compiler: icx}
+          - {os: macos-15-intel, c_compiler: lcc}
+          - {os: macos-15-intel, c_compiler: occ}
+          - {os: macos-15-intel, c_compiler: pgcc}
+          - {os: macos-15-intel, c_compiler: pocc}
+          - {os: macos-15-intel, c_compiler: suncc}
+          - {os: macos-15-intel, c_compiler: tcc}
           - {os: ubuntu-latest, c_compiler: cl}
           - {os: ubuntu-latest, c_compiler: occ}
           - {os: ubuntu-latest, c_compiler: pocc}
@@ -47,7 +47,7 @@ jobs:
           - {c_compiler: pgcc}  # TODO: нет установки под GitHub
           - {c_compiler: suncc}  # TODO: нет установки под GitHub
           - {c_compiler: tcc}  # TODO: нет установки под GitHub
-          # Давим из конфигурации репозитория, можно указать macos-latest
+          # Давим из конфигурации репозитория, можно указать macos-15-intel
           - os: ${{ vars.DISABLE_OS1 }}
           - os: ${{ vars.DISABLE_OS2 }}
           - c_compiler: ${{ vars.DISABLE_CMP1 }}
