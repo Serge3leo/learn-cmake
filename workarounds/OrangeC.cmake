@@ -2,7 +2,29 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # SPDX-FileCopyrightText: 2026 Сергей Леонтьев (leo@sai.msu.ru)
 
-if (CMAKE_C_COMPILER_ID STREQUAL OrangeC)
+# ПРЕДУПРЕЖДЕНИЕ: 1. Этот обход надо применять дважды, до `enable_language()`,
+#                    и после;
+#                 2. Этот обход, в части динамических библиотек, не полон.
+#                    Создание DLL, пока, исправлено только для 7.0.
+
+if (CMAKE_C_COMPILER MATCHES "occ")
+    execute_process(COMMAND "${CMAKE_C_COMPILER}" -V
+                    RESULT_VARIABLE _wOrangeC_res
+                    OUTPUT_VARIABLE _wOrangeC_out)
+    if (NOT "${_wOrangeC_res}" EQUAL 0)
+        message("OrangeC: skip ${_wOrangeC_res}:"
+                " '${CMAKE_C_COMPILER}' -V")
+        return ()
+    endif ()
+    if (NOT "${_wOrangeC_out}" MATCHES
+            "Version +([0-9]+(\\.[0-9]+)+)[ \r\n]+")
+        message("OrangeC: skip '${_wOrangeC_out}':"
+                " '${CMAKE_C_COMPILER}' -V")
+        return ()
+    endif ()
+    set(CMAKE_C_COMPILER_ID "OrangeC")
+    set(CMAKE_C_COMPILER_VERSION "${CMAKE_MATCH_1}")
+
     if (CMAKE_C_COMPILER_VERSION VERSION_GREATER_EQUAL "7.0")
         foreach (lang IN ITEMS C CXX ASM)
             if (${CMAKE_${lang}_CREATE_SHARED_LIBRARY} MATCHES " <FLAGS> ")
@@ -36,8 +58,8 @@ if (CMAKE_C_COMPILER_ID STREQUAL OrangeC)
         set(CMAKE_CXX_STANDARD_LATEST 17)
     endif ()
 else ()
-    # Separately, check that the CMAKE_${lang}_CREATE_SHARED_LIBRARY settings
-    # for other compilers don't use <FLAGS>
+    # Отдельно проверим, что переменные CMAKE_${lang}_CREATE_SHARED_LIBRARY
+    # для других компиляторов не содержат <FLAGS>
 
     foreach (lang IN ITEMS C CXX ASM)
         if (${CMAKE_${lang}_CREATE_SHARED_LIBRARY} MATCHES "<FLAGS>")
