@@ -10,7 +10,12 @@ project(learn_cmake
         HOMEPAGE_URL https://github.com/Serge3leo/learn-cmake
         LANGUAGES C
 )
-include(workarounds/OrangeC.cmake)  # WARNING: without CMAKE_C_COMPILE_FEATURES
+     # WARNING: нижеследующий обход не решает CMAKE_C_COMPILE_FEATURES
+     # возможно будет достаточно проверить по имени и установить до?
+include(workarounds/LCC.cmake)
+include(workarounds/OrangeC.cmake)
+include(workarounds/TinyCC.cmake)
+
 set(CMAKE_C_STANDARD 23)
 
 message("CMAKE_C_COMPILE_FEATURES=${CMAKE_C_COMPILE_FEATURES}")
@@ -39,6 +44,8 @@ if (CMAKE_C_COMPILER_ID STREQUAL PellesC OR
 endif ()
 if (LEARN_CMAKE_CXX_ENABLE)
     enable_language(CXX)
+    include(workarounds/LCC.cmake)
+    include(workarounds/OrangeC.cmake)
     set(CMAKE_CXX_STANDARD 23)
     message("CMAKE_CXX_COMPILE_FEATURES=${CMAKE_CXX_COMPILE_FEATURES}")
     message("CMAKE_CXX_EXTENSIONS_DEFAULT=${CMAKE_CXX_EXTENSIONS_DEFAULT}")
