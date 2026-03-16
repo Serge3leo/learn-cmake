@@ -5,9 +5,14 @@
 #ifndef DFOO_H_1422
 #define DFOO_H_1422
 
+#include "dfoo_export.h"
+
 #define DFOO_DYNAMIC  (1945)
 
-extern int boo(void);
-extern int baz(void);
+DFOO_EXPORT int boo(void);
+DFOO_EXPORT int baz(void);
+
+DFOO_NO_EXPORT int noe_boo(void);
+DFOO_NO_EXPORT int noe_baz(void);
 
 #endif  // DFOO_H_1422

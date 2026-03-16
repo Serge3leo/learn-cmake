@@ -7,6 +7,5 @@
 #include "dfoo.h"
 
 int boo(void) {
-    printf("%s: Я Бу из динамической Фу\n", __func__);
-    return RESPONSE;
+    return noe_boo();
 }
