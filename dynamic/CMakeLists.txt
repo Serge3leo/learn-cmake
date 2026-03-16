@@ -7,6 +7,10 @@
 
 add_library(dfoo SHARED)
 
+# У PellesC необходимо включить расширения для dfoo_export.h
+# (generate_export_header(dfoo)) TODO set_property?
+set_target_properties(dfoo PROPERTIES C_EXTENSIONS ON)
+
 include(GenerateExportHeader)
 generate_export_header(dfoo)
 
@@ -23,6 +27,7 @@ target_sources(
 )
 
 add_executable(case_dynamic case_dynamic.c)
+set_target_properties(case_dynamic PROPERTIES C_EXTENSIONS ON)  # TODO set_property?
 target_link_libraries(case_dynamic dfoo)
 if (CMAKE_C_COMPILER_ID STREQUAL TinyCC)  # TODO: libdfoo.so: cannot open...
     add_test(NAME case_dynamic

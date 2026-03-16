@@ -6,6 +6,6 @@
 
 #include "dfoo.h"
 
-int baz(void) {
+DFOO_EXPORT int baz(void) {
     return noe_baz();
 }

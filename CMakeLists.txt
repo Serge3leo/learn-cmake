@@ -18,7 +18,10 @@ include(workarounds/OrangeC.cmake OPTIONAL)  # Обход DLL
 
 set(CMAKE_C_STANDARD 23)
 
+message("CMAKE_C_COMPILER_VERSION=${CMAKE_C_COMPILER_VERSION}")
 message("CMAKE_C_COMPILE_FEATURES=${CMAKE_C_COMPILE_FEATURES}")
+message("CMAKE_C_STANDARD_LATEST=${CMAKE_C_STANDARD_LATEST}")
+message("CMAKE_C_STANDARD_DEFAULT=${CMAKE_C_STANDARD_DEFAULT}")
 message("CMAKE_C_EXTENSIONS_DEFAULT=${CMAKE_C_EXTENSIONS_DEFAULT}")
 # cmake version 3.31.6
 # cl: c_std_90;c_function_prototypes;c_std_99;c_restrict;c_variadic_macros;c_std_11;c_static_assert;c_std_17
@@ -56,17 +59,10 @@ if(WIN32 AND (LEARN_CMAKE_FORCE_WIN32 OR
     add_subdirectory(win32gui)
 endif ()
 add_subdirectory(static)
-if (LEARN_CMAKE_FORCE_DYNAMIC OR
-    NOT CMAKE_C_COMPILER_ID STREQUAL PellesC)  # TODO Unknown option: /shared
     # Так же, LCC: ADD_LIBRARY called with SHARED option but the target
     # platform does not support dynamic linking.  Building a STATIC library
     # instead.
     add_subdirectory(dynamic)
-else ()
-    foreach (lang IN ITEMS C CXX ASM)
-        message("CMAKE_${lang}_CREATE_SHARED_LIBRARY='${CMAKE_${lang}_CREATE_SHARED_LIBRARY}'")
-    endforeach ()
-endif ()
 if(LEARN_CMAKE_FORCE_ASM OR
    NOT CMAKE_C_COMPILER_ID STREQUAL PellesC)
     add_subdirectory(asm)

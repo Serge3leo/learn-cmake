@@ -6,6 +6,6 @@
 
 #include "dfoo.h"
 
-int boo(void) {
+DFOO_EXPORT int boo(void) {
     return noe_boo();
 }
