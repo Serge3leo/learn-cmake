@@ -6,6 +6,11 @@
 
 #include "dfoo.h"
 
-int baz(void) {
-    return noe_baz();
+int noe_baz(void) {
+    printf("%s: Я Баз из динамической Фу\n", __func__);
+    return DFOO_DYNAMIC;
+}
+int noe_boo(void) {
+    printf("%s: Я Бу из динамической Фу\n", __func__);
+    return DFOO_DYNAMIC;
 }

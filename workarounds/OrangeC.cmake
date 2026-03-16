@@ -7,7 +7,7 @@
 #                 2. Этот обход, в части динамических библиотек, не полон.
 #                    Создание DLL, пока, исправлено только для 7.0.
 
-if (CMAKE_C_COMPILER MATCHES "occ")
+if (CMAKE_C_COMPILER MATCHES "occ" AND NOT CMAKE_C_COMPILER MATCHES "pocc")
     execute_process(COMMAND "${CMAKE_C_COMPILER}" -V
                     RESULT_VARIABLE _wOrangeC_res
                     OUTPUT_VARIABLE _wOrangeC_out)
@@ -25,25 +25,16 @@ if (CMAKE_C_COMPILER MATCHES "occ")
     set(CMAKE_C_COMPILER_ID "OrangeC")
     set(CMAKE_C_COMPILER_VERSION "${CMAKE_MATCH_1}")
 
-    if (CMAKE_C_COMPILER_VERSION VERSION_GREATER_EQUAL "7.0")
-        foreach (lang IN ITEMS C CXX ASM)
-            if (${CMAKE_${lang}_CREATE_SHARED_LIBRARY} MATCHES " <FLAGS> ")
-                string(REPLACE " <FLAGS> " " --export-all-symbols "
-                       CMAKE_${lang}_CREATE_SHARED_LIBRARY
-                       ${CMAKE_${lang}_CREATE_SHARED_LIBRARY})
-                message("CMAKE_${lang}_CREATE_SHARED_LIBRARY="
-                        "'${CMAKE_${lang}_CREATE_SHARED_LIBRARY}'")
-            endif ()
-        endforeach ()
-    else ()
-        foreach (lang IN ITEMS C CXX ASM)
-            if (${CMAKE_${lang}_CREATE_SHARED_LIBRARY} MATCHES " <FLAGS> ")
-                message("WARNING: <FLAGS> in "
-                        "CMAKE_${lang}_CREATE_SHARED_LIBRARY="
-                        "'${CMAKE_${lang}_CREATE_SHARED_LIBRARY}'")
-            endif ()
-        endforeach ()
-    endif ()
+    # TODO: `--export-all-symbols` если CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS
+    foreach (lang IN ITEMS C CXX ASM)
+        if (${CMAKE_${lang}_CREATE_SHARED_LIBRARY} MATCHES " <FLAGS> ")
+            string(REPLACE " <FLAGS> " " "
+                   CMAKE_${lang}_CREATE_SHARED_LIBRARY
+                   ${CMAKE_${lang}_CREATE_SHARED_LIBRARY})
+            message("CMAKE_${lang}_CREATE_SHARED_LIBRARY="
+                    "'${CMAKE_${lang}_CREATE_SHARED_LIBRARY}'")
+        endif ()
+    endforeach ()
     if (CMAKE_C_COMPILER_VERSION VERSION_GREATER_EQUAL "6.0.71")
         set(CMAKE_C23_STANDARD_COMPILE_OPTION -2)
         set(CMAKE_C23_EXTENSION_COMPILE_OPTION -2)
