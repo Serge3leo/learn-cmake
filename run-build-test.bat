@@ -37,9 +37,9 @@ cmake -B %build_output_dir% ^
         %cxx_flags% ^
         -G "%generator%" ^
         -DCMAKE_BUILD_TYPE=%build_type% ^
-        -S .
+        -S . %debug_trycompile%
 if errorlevel 1 exit /b
-cmake --build %build_output_dir% --config %build_type%
+cmake --build %build_output_dir% --config %build_type% %build_verbose%
 if errorlevel 1 exit /b
 cd %build_output_dir%
 ctest --build-config %build_type%
