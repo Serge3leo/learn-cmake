@@ -2,10 +2,8 @@
 // SPDX-License-Identifier: BSD-2-Clause
 // SPDX-FileCopyrightText: 2026 Сергей Леонтьев (leo@sai.msu.ru)
 
-#include <stdio.h>
-
 #include "dfoo.h"
 
-DFOO_EXPORT int boo(void) {
-    return noe_boo();
+int boo(void) {
+    return _noe_boo();
 }

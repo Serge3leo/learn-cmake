@@ -5,39 +5,39 @@
 # Немного усложнено, но как в примере:
 # https://cmake.org/cmake/help/latest/module/GenerateExportHeader.html#example-generating-export-header
 
-add_library(dfoo SHARED)
+add_library(gfoo SHARED)
 
-# У PellesC необходимо включить расширения для dfoo_export.h
-# (generate_export_header(dfoo)) TODO set_property?
-set_target_properties(dfoo PROPERTIES C_EXTENSIONS ON)
+# У PellesC необходимо включить расширения для gfoo_export.h
+# (generate_export_header(gfoo)) TODO set_property?
+set_target_properties(gfoo PROPERTIES C_EXTENSIONS ON)
 
 # Так же, LCC: ADD_LIBRARY called with SHARED option but the target
 # platform does not support dynamic linking.  Building a STATIC library
 # instead.
 
 include(GenerateExportHeader)
-generate_export_header(dfoo)
+generate_export_header(gfoo)
 
 target_sources(
-  dfoo
+  gfoo
   PRIVATE baz.c boo.c noe.c
   PUBLIC
     FILE_SET HEADERS
-      FILES dfoo.h
+      FILES gfoo.h
     FILE_SET generated_headers
       TYPE HEADERS
       BASE_DIRS ${CMAKE_CURRENT_BINARY_DIR}
-      FILES ${CMAKE_CURRENT_BINARY_DIR}/dfoo_export.h
+      FILES ${CMAKE_CURRENT_BINARY_DIR}/gfoo_export.h
 )
 
-add_executable(case_dynamic case_dynamic.c)
-set_target_properties(case_dynamic PROPERTIES C_EXTENSIONS ON)  # TODO set_property?
-target_link_libraries(case_dynamic dfoo)
-if (CMAKE_C_COMPILER_ID STREQUAL TinyCC)  # TODO: libdfoo.so: cannot open...
-    add_test(NAME case_dynamic
-        COMMAND env LD_LIBRARY_PATH=${CMAKE_CURRENT_BINARY_DIR} ./case_dynamic)
+add_executable(case_gdynamic case_dynamic.c)
+set_target_properties(case_gdynamic PROPERTIES C_EXTENSIONS ON)  # TODO set_property?
+target_link_libraries(case_gdynamic gfoo)
+if (CMAKE_C_COMPILER_ID STREQUAL TinyCC)  # TODO: libgfoo.so: cannot open...
+    add_test(NAME case_gdynamic
+        COMMAND env LD_LIBRARY_PATH=${CMAKE_CURRENT_BINARY_DIR} ./case_gdynamic)
 else ()
-    add_test(NAME case_dynamic COMMAND case_dynamic)
+    add_test(NAME case_gdynamic COMMAND case_gdynamic)
 endif ()
 
 enable_testing()

@@ -2,10 +2,15 @@
 // SPDX-License-Identifier: BSD-2-Clause
 // SPDX-FileCopyrightText: 2026 Сергей Леонтьев (leo@sai.msu.ru)
 
-#include <stdio.h>
+#ifndef DFOO_H_3117
+#define DFOO_H_3117
 
-#include "dfoo.h"
+#define DFOO_DYNAMIC  (1905)
 
-DFOO_EXPORT int baz(void) {
-    return noe_baz();
-}
+extern int boo(void);
+extern int baz(void);
+
+extern int _noe_boo(void);
+extern int _noe_baz(void);
+
+#endif  // DFOO_H_3117

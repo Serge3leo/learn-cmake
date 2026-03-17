@@ -4,13 +4,13 @@
 
 #include <stdio.h>
 
-#include "dfoo.h"
+#include "afoo.h"
 
-int noe_baz(void) {
+int _noe_baz(void) {
     printf("%s: Я Баз из динамической Фу\n", __func__);
-    return DFOO_DYNAMIC;
+    return AFOO_DYNAMIC;
 }
-int noe_boo(void) {
+int _noe_boo(void) {
     printf("%s: Я Бу из динамической Фу\n", __func__);
-    return DFOO_DYNAMIC;
+    return AFOO_DYNAMIC;
 }
