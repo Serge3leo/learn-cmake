@@ -66,13 +66,7 @@ endif ()
 add_subdirectory(hello)
 add_subdirectory(win32gui)
 add_subdirectory(static)
-    # Так же, LCC: ADD_LIBRARY called with SHARED option but the target
-    # platform does not support dynamic linking.  Building a STATIC library
-    # instead.
-    add_subdirectory(dynamic)
-if(LEARN_CMAKE_FORCE_ASM OR
-   NOT CMAKE_C_COMPILER_ID STREQUAL PellesC)
-    add_subdirectory(asm)
-endif ()
+add_subdirectory(dynamic)
+add_subdirectory(asm)
 
 enable_testing()

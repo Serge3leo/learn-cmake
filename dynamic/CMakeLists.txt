@@ -11,6 +11,10 @@ add_library(dfoo SHARED)
 # (generate_export_header(dfoo)) TODO set_property?
 set_target_properties(dfoo PROPERTIES C_EXTENSIONS ON)
 
+# Так же, LCC: ADD_LIBRARY called with SHARED option but the target
+# platform does not support dynamic linking.  Building a STATIC library
+# instead.
+
 include(GenerateExportHeader)
 generate_export_header(dfoo)
 
