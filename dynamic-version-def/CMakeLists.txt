@@ -12,7 +12,26 @@ endif ()
 
 set(HDRS dfoo.h)
 
-add_library(dfoo SHARED ${HDRS} boo.c baz.c noe.c dfoo.def)
+if (WIN32)
+    set(DEF dfoo.def)
+    set(PROPS )
+elseif (APPLE)
+    set(DEF )
+    set(PROPS
+        LINK_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/dfoo.exports"
+        LINK_FLAGS "-Wl,-exported_symbols_list \
+                    -Wl,${CMAKE_CURRENT_SOURCE_DIR}/dfoo.exports")
+else ()
+    set(DEF )
+    set(PROPS
+        LINK_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/dfoo.vers"
+        LINK_FLAGS "-Wl,--version-script=${CMAKE_CURRENT_SOURCE_DIR}/dfoo.vers")
+endif ()
+
+add_library(dfoo SHARED ${HDRS} boo.c baz.c noe.c ${DEF})
+if (PROPS)
+    set_target_properties(dfoo PROPERTIES ${PROPS})
+endif ()
 
 add_executable(case_ddynamic ${HDRS} case_dynamic.c)
 target_link_libraries(case_ddynamic dfoo)
