@@ -10,12 +10,13 @@
  ****************************************************************************/
 
 #include <stdio.h>
+#include <wchar.h>
 
 #define WIN32_LEAN_AND_MEAN  /* speed up compilations */
 #include <windows.h>
 #include <windowsx.h>
 #include <commctrl.h>
-#include <wchar.h>
+
 #include "main.h"
 
 #define NELEMS(a)  (sizeof(a) / sizeof((a)[0]))
@@ -63,6 +64,8 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, WCHAR *pszCm
     MSG msg;
 
     ghInstance = hInstance;
+
+    (void)swscanf(pszCmdLine, L"%u", &g_pb.timeout);
 
     /* Initialize common controls. Also needed for MANIFEST's */
     /*

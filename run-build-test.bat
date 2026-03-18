@@ -31,6 +31,11 @@ if "%1" == "cl" (
     echo .
     exit /b 4
 )
+if "%1" == "cl" (
+    set build_hello_dir=%build_output_dir%\hello\%build_type%
+) else (
+    set build_hello_dir=%build_output_dir%\hello
+)
 
 cmake -B %build_output_dir% ^
         -DCMAKE_C_COMPILER=%1 ^
@@ -44,7 +49,7 @@ if errorlevel 1 exit /b
 ctest --output-on-failure --build-config %build_type% ^
       --test-dir %build_output_dir%
 if errorlevel 1 exit /b
-for /r %%e in (%build_type%\hello*.exe) do (
+for /r "%build_hello_dir%" %%e in (hello*.exe) do (
     echo %%e
     %%e
     if errorlevel 1 exit /b
