@@ -183,17 +183,16 @@ jobs:
         run: cmake --build build --config $build_type
 
       - name: Тесты
-        working-directory: ${{ github.workspace }}/build
         shell: bash
         run: ctest --output-on-failure --build-config $build_type
+          --test-dir build
 
       - name: Контрольный запуск
-        working-directory: ${{ github.workspace }}/build
         shell: bash
         run: |
           if [ "$c_compiler" = "cl" ] ; then
             d="$build_type"
           fi
-          for h in ./hello/$d/hello* ; do
+          for h in build/hello/$d/hello* ; do
             $cross_emul "$h"
           done
