@@ -41,10 +41,10 @@ cmake -B %build_output_dir% ^
 if errorlevel 1 exit /b
 cmake --build %build_output_dir% --config %build_type% %build_verbose%
 if errorlevel 1 exit /b
-cd %build_output_dir%
-ctest --build-config %build_type%
+ctest --output-on-failure --build-config %build_type% ^
+      --test-dir %build_output_dir%
 if errorlevel 1 exit /b
-for /r %%e in (hello*.exe) do (
+for /r %%e in (%build_type%\hello*.exe) do (
     echo %%e
     %%e
     if errorlevel 1 exit /b

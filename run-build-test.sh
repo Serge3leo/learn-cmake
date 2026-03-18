@@ -92,8 +92,7 @@ cmake -B "$build_output_dir" \
       -DCMAKE_C_COMPILER="$c_compiler" $cxx_flags \
       -DCMAKE_BUILD_TYPE=$build_type $cmake_add -S .
 cmake --build "$build_output_dir" --config $build_type
-cd "$build_output_dir"
-ctest --output-on-failure --build-config $build_type
-for h in ./hello/hello* ; do
+ctest --output-on-failure --build-config $build_type --test-dir "$build_output_dir"
+for h in "$build_output_dir"/hello/hello* ; do
     $cross_emul $h
 done
