@@ -8,6 +8,14 @@ endif ()
 
 if (CMAKE_C_COMPILER_ID STREQUAL OrangeC)
     set(occ_workaround occ_workarond.c)
+    #set(CMAKE_RC_FLAGS "-i${CMAKE_CURRENT_SOURCE_DIR}")
+    message("CMAKE_INCLUDE_FLAG_RC=${CMAKE_INCLUDE_FLAG_RC}")
+    include_directories(.)
+    # TODO: WARNING:
+    # - `orc` ищет файлы безотносительно каталога файла, который на них
+    #   ссылается;
+    # - непонятная ошибка с `#include <richedit.h>`, см. `main.rc`;
+    # - `orc` отвергает флаг `-I` (CMAKE_INCLUDE_FLAG_RC);
 endif ()
 
 # https://learn.microsoft.com/en-us/cpp/text/unicode-programming-summary
