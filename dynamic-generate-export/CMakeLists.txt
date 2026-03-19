@@ -2,6 +2,12 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # SPDX-FileCopyrightText: 2026 Сергей Леонтьев (leo@sai.msu.ru)
 
+if (CMAKE_C_COMPILER_ID STREQUAL OrangeC AND
+    "${CMAKE_C_COMPILER_VERSION}" VERSION_LESS_EQUAL 6.73.8)
+    message("TODO dynamic-generate-export: OrangeC 6.73.8 - unsupported, skip")
+    return ()
+endif ()
+
 # Немного усложнено, но как в примере:
 # https://cmake.org/cmake/help/latest/module/GenerateExportHeader.html#example-generating-export-header
 

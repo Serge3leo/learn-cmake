@@ -6,6 +6,10 @@
 # support dynamic linking.  Building a STATIC library instead.
 
 if (CMAKE_C_COMPILER_ID STREQUAL OrangeC)
+    if ("${CMAKE_C_COMPILER_VERSION}" VERSION_LESS_EQUAL 6.73.8)
+        message("TODO dynamic-export-all: OrangeC 6.73.8 - unsupported, skip")
+        return ()
+    endif ()
     set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
     add_link_options(
         "$<IF:$<BOOL:$<TARGET_PROPERTY:WINDOWS_EXPORT_ALL_SYMBOLS>>,--export-all-symbols,>")
