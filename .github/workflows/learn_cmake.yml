@@ -101,6 +101,11 @@ jobs:
             build_type=Release
           fi
           c_compiler="${{ matrix.c_compiler }}"
+          if [ -n "$VERBOSE" ] ; then
+            for d in /usr/bin /usr/local/bin /opt/local/bin ; do
+              ls -l $d/*"$c_compiler"* || true
+            done
+          fi
           case "$c_compiler" in
           clang)
             c_compiler=""
@@ -109,7 +114,12 @@ jobs:
               if type $c > /dev/null ; then
                 c_compiler=$c
                 cxx=`echo $c | sed 's/clang/clang++/'`
-                break
+                if type $cxx > /dev/null ; then
+                  break
+                fi
+                if type "$cxx++" > /dev/null ; then
+                  break
+                fi
               fi
             done
             ;;
@@ -119,7 +129,12 @@ jobs:
               if type $c > /dev/null ; then
                 c_compiler=$c
                 cxx=`echo $c | sed 's/gcc/g++/'`
-                break
+                if type $cxx > /dev/null ; then
+                  break
+                fi
+                if type "$cxx++" > /dev/null ; then
+                  break
+                fi
               fi
             done
             ;;
