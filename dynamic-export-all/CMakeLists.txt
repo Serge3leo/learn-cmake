@@ -5,13 +5,19 @@
 # LCC: ADD_LIBRARY called with SHARED option but the target platform does not
 # support dynamic linking.  Building a STATIC library instead.
 
-if (WIN32 AND NOT CMAKE_SUPPORT_WINDOWS_EXPORT_ALL_SYMBOLS)
+if (CMAKE_C_COMPILER_ID STREQUAL OrangeC)
+    set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+    add_link_options(
+        "$<IF:$<BOOL:$<TARGET_PROPERTY:WINDOWS_EXPORT_ALL_SYMBOLS>>,--export-all-symbols,>")
+    # TODO, но как это выражение использовать в
+    # CMAKE_${lang}_CREATE_SHARED_LIBRARY или CMAKE_SHARED_LINKER_FLAGS ?
+elseif (WIN32 AND NOT CMAKE_SUPPORT_WINDOWS_EXPORT_ALL_SYMBOLS)
     message("WARNING: ${CMAKE_C_COMPILER_ID}: don't support"
             " CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS, skipped")
     return ()
+else ()
+    set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 endif ()
-
-set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 
 set(HDRS afoo.h)
 

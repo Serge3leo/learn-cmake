@@ -171,14 +171,33 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, WCHAR *pszCm
     if (!fu) {
 	FatalAppExit(0, L"Can't create 'unicode.txt'");
     }
-    #define _STR(X)  #X
-    #define STR(X)  _STR(X)
-    #ifdef UNICODE
-	fprintf(fu, "define UNICODE as %s\n", STR(UNICODE));
-    #endif
-    #ifdef _UNICODE
-	fprintf(fu, "define _UNICODE as %s\n", STR(_UNICODE));
-    #endif
+    #define STR(A)  #A
+    #define DUMP(X) printf(#X "=%s\n", STR(X))
+    #define P(N)  \
+	((void)(!strcmp(#N, STR(N)) ? 0 : fprintf(fu, "%s=%s ", #N, STR(N))))
+    #define P2(N1, N2)  ((void)(!strcmp(#N1, STR(N1)) ? 0 : fprintf(fu, \
+                                "%s.%s=%s.%s ", #N1, #N1, STR(N1), STR(N2))))
+    P2(__clang_major__, __clang_minor__);
+    P2(__GNUC__, __GNUC_MINOR__);
+    P(__INTEL_COMPILER);
+    P(__INTEL_LLVM_COMPILER);
+    P2(__LCC__, __LCC_MINOR__);
+    P(_MSC_VER);
+    P2(__CUDACC_VER_MAJOR__, __CUDACC_VER_MINOR__);
+    P2(__NVCOMPILER_MAJOR__, __NVCOMPILER_MINOR__);
+    P(__ORANGEC__);
+    P(__POCC__);
+    P(__SUNPRO_C);
+    P(__SUNPRO_CC);
+    P(__TINYC__);
+    printf("\n");
+    P(__STRICT_ANSI__);
+    P(__STDC_NO_VLA__);
+    P(__STDC_VERSION__);
+    P(__STDC__);
+    printf("\n---\n");
+    P(UNICODE);
+    P(_UNICODE);
     fclose(fu);
 
     return msg.wParam;

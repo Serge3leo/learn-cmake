@@ -1,8 +1,12 @@
-@echo on
+@echo off
 rem vim:set sw=4 ts=8 et fileencoding=utf8:
 rem SPDX-License-Identifier: BSD-2-Clause
 rem SPDX-FileCopyrightText: 2025 Сергей Леонтьев (leo@sai.msu.ru)
 
+if NOT "x%VERBOSE%" == "x" (
+    set config_verbose=--log-level=VERBOSE --debug-trycompile
+    set buld_verbose=--verbose
+)
 if "x%build_type%" == "x" (
     set build_type=Release
 )
@@ -42,7 +46,7 @@ cmake -B %build_output_dir% ^
         %cxx_flags% ^
         -G "%generator%" ^
         -DCMAKE_BUILD_TYPE=%build_type% ^
-        -S . %debug_trycompile%
+        -S . %config_verbose%
 if errorlevel 1 exit /b
 cmake --build %build_output_dir% --config %build_type% %build_verbose%
 if errorlevel 1 exit /b

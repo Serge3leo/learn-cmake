@@ -44,10 +44,10 @@ add_test(NAME main
 add_test(NAME UNICODE
          COMMAND "${CMAKE_COMMAND}" -E cat "${DIR}/unicode.txt")
 set_tests_properties(UNICODE PROPERTIES
-                     PASS_REGULAR_EXPRESSION " UNICODE .* 1[ \r\n]")
+                     PASS_REGULAR_EXPRESSION " UNICODE=1[ \r\n]")
 add_test(NAME _UNICODE
          COMMAND "${CMAKE_COMMAND}" -E cat "${DIR}/unicode.txt")
 set_tests_properties(_UNICODE PROPERTIES
-                     PASS_REGULAR_EXPRESSION " _UNICODE .* 1[ \r\n]")
+                     PASS_REGULAR_EXPRESSION " _UNICODE=1[ \r\n]")
 
 enable_testing()

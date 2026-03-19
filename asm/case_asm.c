@@ -12,9 +12,6 @@ int main(void) {
         printf("Хорь, ассемблерный Фу.\n");
     } else {
         printf("FAIL: неизвестный Фу %zu\n", foo());
-        return EXIT_FAILURE;
+        exit(EXIT_FAILURE);
     }
-    #if __SUNPRO_C  // TODO не понял
-        return 0;
-    #endif
 }

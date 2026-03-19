@@ -31,6 +31,7 @@ int main(void) {
     P(__STDC_NO_VLA__);
     P(__STDC_VERSION__);
     P(__STDC__);
+    P(__cplusplus);
     printf("\n---\n");
     DUMP(TEST_DEFINITIONS);
     DUMP(TEST_DEFINITIONS_VAL);

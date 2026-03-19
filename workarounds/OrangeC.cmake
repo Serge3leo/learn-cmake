@@ -7,7 +7,7 @@
 #                 2. Этот обход, в части динамических библиотек, не полон.
 #                    Создание DLL, пока, исправлено только для 7.0.
 
-if (CMAKE_C_COMPILER MATCHES "occ" AND NOT CMAKE_C_COMPILER MATCHES "pocc")
+if (CMAKE_C_COMPILER MATCHES "(^|[/\\])[oO][cC][cC]")
     execute_process(COMMAND "${CMAKE_C_COMPILER}" -V
                     RESULT_VARIABLE _wOrangeC_res
                     OUTPUT_VARIABLE _wOrangeC_out)
@@ -26,15 +26,20 @@ if (CMAKE_C_COMPILER MATCHES "occ" AND NOT CMAKE_C_COMPILER MATCHES "pocc")
     set(CMAKE_C_COMPILER_VERSION "${CMAKE_MATCH_1}")
 
     # TODO: `--export-all-symbols` если CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS
+    #set(CMAKE_SUPPORT_WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
     foreach (lang IN ITEMS C CXX ASM)
         if (${CMAKE_${lang}_CREATE_SHARED_LIBRARY} MATCHES " <FLAGS> ")
-            string(REPLACE " <FLAGS> " " "
+            string(REPLACE " <FLAGS> "
+                   # " $<IF:$<BOOL:$<TARGET_PROPERTY:WINDOWS_EXPORT_ALL_SYMBOLS>>,--export-all-symbols,> "
+                   " "
                    CMAKE_${lang}_CREATE_SHARED_LIBRARY
                    ${CMAKE_${lang}_CREATE_SHARED_LIBRARY})
-            message("CMAKE_${lang}_CREATE_SHARED_LIBRARY="
-                    "'${CMAKE_${lang}_CREATE_SHARED_LIBRARY}'")
+            # message("CMAKE_${lang}_CREATE_SHARED_LIBRARY="
+            #         "'${CMAKE_${lang}_CREATE_SHARED_LIBRARY}'")
         endif ()
     endforeach ()
+    # string(APPEND CMAKE_SHARED_LINKER_FLAGS
+    #        "$<IF:$<BOOL:$<TARGET_PROPERTY:WINDOWS_EXPORT_ALL_SYMBOLS>>,--export-all-symbols,>")
 
     if(NOT CMAKE_RC_COMPILER_INIT)
         set(CMAKE_RC_COMPILER_INIT orc)
@@ -46,7 +51,9 @@ if (CMAKE_C_COMPILER MATCHES "occ" AND NOT CMAKE_C_COMPILER MATCHES "pocc")
     if (CMAKE_PROJECT_NAME)
         enable_language(RC)
     endif ()
-    set(CMAKE_INCLUDE_FLAG_RC -i)
+    if ("${CMAKE_RC_COMPILER}" MATCHES "(^|[/\\])[oO][rR][cC]")
+        set(CMAKE_INCLUDE_FLAG_RC -i)
+    endif ()
 
     if (CMAKE_C_COMPILER_VERSION VERSION_GREATER_EQUAL "6.0.71")
         set(CMAKE_C23_STANDARD_COMPILE_OPTION -2)
