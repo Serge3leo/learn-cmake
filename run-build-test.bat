@@ -1,8 +1,12 @@
-@echo on
+@echo off
 rem vim:set sw=4 ts=8 et fileencoding=utf8:
 rem SPDX-License-Identifier: BSD-2-Clause
 rem SPDX-FileCopyrightText: 2025 Сергей Леонтьев (leo@sai.msu.ru)
 
+if NOT "x%VERBOSE%" == "x" (
+    set config_verbose=--log-level=VERBOSE --debug-trycompile
+    set buld_verbose=--verbose
+)
 if "x%build_type%" == "x" (
     set build_type=Release
 )
@@ -31,20 +35,25 @@ if "%1" == "cl" (
     echo .
     exit /b 4
 )
+if "%1" == "cl" (
+    set build_hello_dir=%build_output_dir%\hello\%build_type%
+) else (
+    set build_hello_dir=%build_output_dir%\hello
+)
 
 cmake -B %build_output_dir% ^
         -DCMAKE_C_COMPILER=%1 ^
         %cxx_flags% ^
         -G "%generator%" ^
         -DCMAKE_BUILD_TYPE=%build_type% ^
-        -S .
+        -S . %config_verbose%
 if errorlevel 1 exit /b
-cmake --build %build_output_dir% --config %build_type%
+cmake --build %build_output_dir% --config %build_type% %build_verbose%
 if errorlevel 1 exit /b
-cd %build_output_dir%
-ctest --build-config %build_type%
+ctest --output-on-failure --build-config %build_type% ^
+      --test-dir %build_output_dir%
 if errorlevel 1 exit /b
-for /r %%e in (hello*.exe) do (
+for /r "%build_hello_dir%" %%e in (hello*.exe) do (
     echo %%e
     %%e
     if errorlevel 1 exit /b

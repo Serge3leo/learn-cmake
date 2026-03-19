@@ -1,0 +1,4 @@
+LIBRARY dfoo.dll
+EXPORTS
+    baz
+    boo

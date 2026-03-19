@@ -2,31 +2,38 @@
 // SPDX-License-Identifier: BSD-2-Clause
 // SPDX-FileCopyrightText: 2025 Сергей Леонтьев (leo@sai.msu.ru)
 
+#include <cstdio>  // SunPro 5.15.0 trouble
+#include <cstring>
 #include <iostream>
+
+#define STR(A)  #A
+#define DUMP(X) printf(#X "=%s\n", STR(X))
+#define P(N)  ((void)(!strcmp(#N, STR(N)) ? 0 : printf("%s=%s ", #N, STR(N))))
+#define P2(N1, N2)  ((void)(!strcmp(#N1, STR(N1)) ? 0 : printf( \
+                                "%s.%s=%s.%s ", #N1, #N1, STR(N1), STR(N2))))
 
 int main(void) {
     std::cout << "Привет мир++\nМы из ";
-    #if __ORANGEC__
-        std::cout << "__ORANGEC_MAJOR__ __ORANGEC_MINOR__: "
-                  << __ORANGEC_MAJOR__ << ' ' << __ORANGEC_MINOR__ << '\n';
-    #endif
-    #if __clang_major__
-        std::cout << "__clang_major__ __clang_minor__: "
-                  << __clang_major__ << ' ' << __clang_minor__ << '\n';
-    #endif
-    #if __GNUC__
-        std::cout << "__GNUC__ __GNUC_MINOR__: "
-                  << __GNUC__ << ' ' << __GNUC_MINOR__ << '\n';
-    #endif
-    #if _MSC_VER
-        std::cout << "_MSC_VER: " << _MSC_VER << '\n';
-    #endif
-    #if __INTEL_LLVM_COMPILER
-        std::cout << "__INTEL_LLVM_COMPILER: " << __INTEL_LLVM_COMPILER << '\n';
-    #endif
-    #if __LCC__
-        std::cout << "__LCC__ __LCC_MINOR__: "
-                  << __LCC__ << ' ' << __LCC_MINOR__ << '\n';
-    #endif
-    std::cout << "__cplusplus: " << __cplusplus << '\n';
+    P2(__clang_major__, __clang_minor__);
+    P2(__GNUC__, __GNUC_MINOR__);
+    P(__INTEL_COMPILER);
+    P(__INTEL_LLVM_COMPILER);
+    P2(__LCC__, __LCC_MINOR__);
+    P(_MSC_VER);
+    P2(__CUDACC_VER_MAJOR__, __CUDACC_VER_MINOR__);
+    P2(__NVCOMPILER_MAJOR__, __NVCOMPILER_MINOR__);
+    P(__ORANGEC__);
+    P(__POCC__);
+    P(__SUNPRO_C);
+    P(__SUNPRO_CC);
+    P(__TINYC__);
+    printf("\n");
+    P(__STRICT_ANSI__);
+    P(__STDC_NO_VLA__);
+    P(__STDC_VERSION__);
+    P(__STDC__);
+    P(__cplusplus);
+    printf("\n---\n");
+    DUMP(TEST_DEFINITIONS);
+    DUMP(TEST_DEFINITIONS_VAL);
 }

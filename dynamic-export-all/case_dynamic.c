@@ -5,16 +5,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "dfoo.h"
+#include "afoo.h"
 
 int main(void) {
-    if (boo() == DFOO_DYNAMIC && baz() == DFOO_DYNAMIC) {
+    if (boo() == AFOO_DYNAMIC && baz() == AFOO_DYNAMIC) {
         printf("Хорь, Бу и Баз из динамического Фу\n");
     } else {
         printf("FAIL: неизвестный Бу (%d) или Баз (%d)\n", boo(), baz());
-        return EXIT_FAILURE;
+        exit(EXIT_FAILURE);
     }
-    #if __SUNPRO_C  // TODO не понял
-        return 0;
-    #endif
 }

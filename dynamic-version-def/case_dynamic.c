@@ -5,13 +5,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "foo.h"
+#include "dfoo.h"
 
 int main(void) {
-    if (foo() == FOO_ASM) {
-        printf("Хорь, ассемблерный Фу.\n");
+    if (boo() == DFOO_DYNAMIC && baz() == DFOO_DYNAMIC) {
+        printf("Хорь, Бу и Баз из динамического Фу\n");
     } else {
-        printf("FAIL: неизвестный Фу %zu\n", foo());
+        printf("FAIL: неизвестный Бу (%d) или Баз (%d)\n", boo(), baz());
         exit(EXIT_FAILURE);
     }
 }

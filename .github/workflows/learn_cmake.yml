@@ -91,6 +91,7 @@ jobs:
         with:
           # version: 12.0.2  # WARNING: Needed windows-2022
           verbose: true
+          msystem: skip  # MSYS2 уже установлен `occ`
 
       - name: Имена компиляторов с версиями, если необходимо
         shell: bash
@@ -100,6 +101,11 @@ jobs:
             build_type=Release
           fi
           c_compiler="${{ matrix.c_compiler }}"
+          if [ -n "$VERBOSE" ] ; then
+            for d in /usr/bin /usr/local/bin /opt/local/bin ; do
+              ls -l $d/*"$c_compiler"* || true
+            done
+          fi
           case "$c_compiler" in
           clang)
             c_compiler=""
@@ -108,7 +114,12 @@ jobs:
               if type $c > /dev/null ; then
                 c_compiler=$c
                 cxx=`echo $c | sed 's/clang/clang++/'`
-                break
+                if type $cxx > /dev/null ; then
+                  break
+                fi
+                if type "$cxx++" > /dev/null ; then
+                  break
+                fi
               fi
             done
             ;;
@@ -118,7 +129,12 @@ jobs:
               if type $c > /dev/null ; then
                 c_compiler=$c
                 cxx=`echo $c | sed 's/gcc/g++/'`
-                break
+                if type $cxx > /dev/null ; then
+                  break
+                fi
+                if type "$cxx++" > /dev/null ; then
+                  break
+                fi
               fi
             done
             ;;
@@ -182,17 +198,16 @@ jobs:
         run: cmake --build build --config $build_type
 
       - name: Тесты
-        working-directory: ${{ github.workspace }}/build
         shell: bash
         run: ctest --output-on-failure --build-config $build_type
+          --test-dir build
 
       - name: Контрольный запуск
-        working-directory: ${{ github.workspace }}/build
         shell: bash
         run: |
           if [ "$c_compiler" = "cl" ] ; then
             d="$build_type"
           fi
-          for h in ./hello/$d/hello* ; do
+          for h in build/hello/$d/hello* ; do
             $cross_emul "$h"
           done
