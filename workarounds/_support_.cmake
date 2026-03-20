@@ -1,0 +1,63 @@
+# vim:set sw=2 ts=8 et fileencoding=utf8:
+# SPDX-License-Identifier: BSD-2-Clause
+# SPDX-FileCopyrightText: 2026 Сергей Леонтьев (leo@sai.msu.ru)
+
+function (detect id detect fail)
+    file(READ "${CMAKE_ROOT}/Modules/${${id}_module}" cnt)
+    if (NOT cnt MATCHES "${detect}")
+        set(${fail} 1 PARENT_SCOPE)
+        # TODO 4.2 string(REGEX QUOTE qdetect ${detect})
+        message(STATUS "${id}: don't detect '${detect}'")
+    endif ()
+endfunction ()
+
+function (apply_patch in patch out fail)
+  if (in MATCHES "${${patch}_detect}")
+    message(SEND_ERROR "apply_patch: matched '${${patch}_detect}'")
+    set(${fail} 1 PARENT_SCOPE)
+    return ()
+  endif ()
+  string(REGEX REPLACE "${${patch}_match}" "${${patch}_replace}"
+         repl "${in}")
+  if (NOT repl MATCHES "${${patch}_detect}")
+    message(SEND_ERROR "apply_patch: don't replaced for '${${patch}_detect}'")
+    message("match='${${patch}_match}'")
+    message("repl='${repl}'")
+    set(${fail} 1 PARENT_SCOPE)
+    return ()
+  endif ()
+  string(REGEX REPLACE "${${patch}_rev_match}" "${${patch}_rev_replace}"
+         cmp "${repl}")
+  if (NOT in STREQUAL cmp)
+    message(SEND_ERROR
+            "apply_patch: patch don't reversible '${${patch}_detect}'")
+    message("in: -----\n${in}-----")
+    message("cmp: =====\n${cmp}=====")
+    set(${fail} 1 PARENT_SCOPE)
+    return ()
+  endif ()
+  set(${out} "${repl}" PARENT_SCOPE)
+endfunction ()
+
+function (rev_apply_patch in patch out fail)
+  if (NOT in MATCHES "${${patch}_detect}")
+    message(SEND_ERROR "rev_apply_patch: don't matched '${${patch}_detect}'")
+    set(${fail} 1 PARENT_SCOPE)
+    return ()
+  endif ()
+  string(REGEX REPLACE "${${patch}_rev_match}" "${${patch}_rev_replace}"
+         repl "${in}")
+  if (repl MATCHES "${${patch}_detect}")
+    message(SEND_ERROR
+            "rev_apply_patch: don't replaced for '${${patch}_detect}'")
+    message("repl=${repl}")
+    set(${fail} 1 PARENT_SCOPE)
+    return ()
+  endif ()
+  set(${out} "${repl}" PARENT_SCOPE)
+endfunction ()
+
+function (save filename suffix content)
+  file(RENAME "${filename}" "${filename}.${suffix}")
+  file(WRITE "${filename}" "${content}")
+endfunction ()

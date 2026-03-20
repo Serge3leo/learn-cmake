@@ -7,19 +7,19 @@ if (NOT WIN32)
 endif ()
 
 if (CMAKE_C_COMPILER_ID STREQUAL OrangeC)
-    if ("${CMAKE_C_COMPILER_VERSION}" VERSION_LESS_EQUAL 6.73.8)
-        message("TODO win32gui: OrangeC 6.73.8 orc - unsupported, skip")
+    if ("${CMAKE_C_COMPILER_VERSION}" VERSION_LESS "7.0")
+        message("win32gui: ORC broken before OrangeC 7.0, skip")
         return ()
     endif ()
-    set(occ_workaround occ_workarond.c)
-    #set(CMAKE_RC_FLAGS "-i${CMAKE_CURRENT_SOURCE_DIR}")
-    message("CMAKE_INCLUDE_FLAG_RC=${CMAKE_INCLUDE_FLAG_RC}")
     include_directories(.)
     # TODO: WARNING:
     # - `orc` ищет файлы безотносительно каталога файла, который на них
     #   ссылается;
     # - непонятная ошибка с `#include <richedit.h>`, см. `main.rc`;
     # - `orc` отвергает флаг `-I` (CMAKE_INCLUDE_FLAG_RC);
+    set(occ_workaround occ_workarond.c)
+elseif (MINGW AND NOT MINGW32CE)  # Need for MSYS2 gcc/clang
+    add_link_options(-municode)
 endif ()
 
 # https://learn.microsoft.com/en-us/cpp/text/unicode-programming-summary

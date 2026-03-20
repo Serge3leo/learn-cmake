@@ -190,6 +190,14 @@ jobs:
           cmake_add=$cmake_add
           _end_of_github_env_
 
+      - name: Ставим заплатки
+        shell: bash
+        run: |
+          cmake -P workarounds/detect.cmake || {
+            cmake -P workarounds/install.cmake
+          }
+          cmake -P workarounds/detect.cmake
+
       - name: Конфигурация
         shell: bash
         run: >
