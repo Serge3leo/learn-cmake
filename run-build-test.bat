@@ -5,7 +5,7 @@ rem SPDX-FileCopyrightText: 2025 Сергей Леонтьев (leo@sai.msu.ru)
 
 if NOT "x%VERBOSE%" == "x" (
     set config_verbose=--log-level=VERBOSE --debug-trycompile
-    set buld_verbose=--verbose
+    set build_verbose=--verbose
 )
 if "x%build_type%" == "x" (
     set build_type=Release
@@ -23,6 +23,14 @@ if "%1" == "cl" (
         echo "VisualStudioVersion=%VisualStudioVersion%: uninplemented" 1>&2
         exit /b 3
     )
+) else if "%1" == "clang" (
+    set build_output_dir=build\win_clang
+    set cxx_flags=-DCMAKE_CXX_COMPILER=clang++
+    set generator=MSYS Makefiles
+) else if "%1" == "gcc" (
+    set build_output_dir=build\win_gcc
+    set cxx_flags=-DCMAKE_CXX_COMPILER=g++
+    set generator=MSYS Makefiles
 ) else if "%1" == "occ" (
     set build_output_dir=build\win_occ
     set cxx_flags=-DCMAKE_CXX_COMPILER=occ

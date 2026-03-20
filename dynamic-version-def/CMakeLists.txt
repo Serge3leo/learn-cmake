@@ -5,6 +5,9 @@
 if (CMAKE_C_COMPILER_ID STREQUAL OrangeC)
     message("WARNING: OrangeC need workaround for .def files")
     return ()
+elseif (NOT WIN32 AND CMAKE_C_COMPILER_ID STREQUAL TinyCC)
+    message("WARNING: TinyCC need workaround for --version-script")
+    return ()
 endif ()
 
 # LCC: ADD_LIBRARY called with SHARED option but the target platform does not

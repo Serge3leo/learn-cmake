@@ -76,6 +76,7 @@ jobs:
         with:
           # version: 2025.1
           verbose: true
+
       - if: matrix.c_compiler == 'lcc'
         uses: Serge3leo/lcc-env-action@v0
         # with:
@@ -86,12 +87,14 @@ jobs:
         with:
           # version: 6.73.1
           verbose: true
+          msystem: skip  # Может и так ничего
+
       - if: matrix.c_compiler == 'pocc'
         uses: Serge3leo/pellesc-msys2@v0
         with:
           # version: 12.0.2  # WARNING: Needed windows-2022
           verbose: true
-          msystem: skip  # MSYS2 уже установлен `occ`
+          msystem: skip  # Может и так ничего
 
       - name: Имена компиляторов с версиями, если необходимо
         shell: bash
@@ -185,6 +188,17 @@ jobs:
           cross_emul=$cross_emul
           cmake_add=$cmake_add
           _end_of_github_env_
+
+      - name: Ставим заплатки
+        shell: bash
+        run: |
+          type sudo && {
+            SUDO=sudo
+          }
+          cmake -P workarounds/detect.cmake || {
+            $SUDO cmake -P workarounds/install.cmake
+          }
+          cmake -P workarounds/detect.cmake
 
       - name: Конфигурация
         shell: bash
