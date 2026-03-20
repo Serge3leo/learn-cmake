@@ -91,7 +91,8 @@ jobs:
           msystem: skip  # Может и так ничего
 
       - if: matrix.c_compiler == 'pocc'
-        uses: Serge3leo/pellesc-msys2@v0
+        uses: Serge3leo/pellesc-msys2@patches
+        # uses: Serge3leo/pellesc-msys2@v0
         with:
           # version: 12.0.2  # WARNING: Needed windows-2022
           verbose: true

@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # SPDX-FileCopyrightText: 2026 Сергей Леонтьев (leo@sai.msu.ru)
 
-function (detect id detect fail)
+function (ps_detect id detect fail)
     file(READ "${CMAKE_ROOT}/Modules/${${id}_module}" cnt)
     if (NOT cnt MATCHES "${detect}")
         set(${fail} 1 PARENT_SCOPE)
@@ -11,7 +11,7 @@ function (detect id detect fail)
     endif ()
 endfunction ()
 
-function (apply_patch in patch out fail)
+function (ps_apply_patch in patch out fail)
   if (in MATCHES "${${patch}_detect}")
     message(SEND_ERROR "apply_patch: matched '${${patch}_detect}'")
     set(${fail} 1 PARENT_SCOPE)
@@ -39,7 +39,7 @@ function (apply_patch in patch out fail)
   set(${out} "${repl}" PARENT_SCOPE)
 endfunction ()
 
-function (rev_apply_patch in patch out fail)
+function (ps_rev_apply_patch in patch out fail)
   if (NOT in MATCHES "${${patch}_detect}")
     message(SEND_ERROR "rev_apply_patch: don't matched '${${patch}_detect}'")
     set(${fail} 1 PARENT_SCOPE)
@@ -57,7 +57,25 @@ function (rev_apply_patch in patch out fail)
   set(${out} "${repl}" PARENT_SCOPE)
 endfunction ()
 
-function (save filename suffix content)
+function (ps_save filename suffix content)
   file(RENAME "${filename}" "${filename}.${suffix}")
   file(WRITE "${filename}" "${content}")
+endfunction ()
+
+function (ps_install modules)
+  file(GLOB_RECURSE ifs LIST_DIRECTORIES false
+       RELATIVE "${modules}" "${modules}/*.cmake")
+  foreach (f IN LISTS ifs)
+    message("${CMAKE_ROOT}/Modules/${f}")
+    file(COPY_FILE "${modules}/${f}" "${CMAKE_ROOT}/Modules/${f}")
+  endforeach ()
+endfunction ()
+
+function (ps_uninstall modules)
+  file(GLOB_RECURSE ifs LIST_DIRECTORIES false
+       RELATIVE "${modules}" "${modules}/*.cmake")
+  foreach (f IN LISTS ifs)
+    message("${CMAKE_ROOT}/Modules/${f}")
+    file(REMOVE "${CMAKE_ROOT}/Modules/${f}")
+  endforeach ()
 endfunction ()
