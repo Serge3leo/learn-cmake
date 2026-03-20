@@ -194,7 +194,7 @@ jobs:
         shell: bash
         run: |
           cmake -P workarounds/detect.cmake || {
-            cmake -P workarounds/install.cmake
+            sudo cmake -P workarounds/install.cmake
           }
           cmake -P workarounds/detect.cmake
 
