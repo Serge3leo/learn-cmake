@@ -193,8 +193,11 @@ jobs:
       - name: Ставим заплатки
         shell: bash
         run: |
+          type sudo && {
+            SUDO=sudo
+          }
           cmake -P workarounds/detect.cmake || {
-            sudo cmake -P workarounds/install.cmake
+            $SUDO cmake -P workarounds/install.cmake
           }
           cmake -P workarounds/detect.cmake
 
