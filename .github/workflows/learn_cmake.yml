@@ -215,16 +215,6 @@ jobs:
           cmake_add=$cmake_add
           _end_of_github_env_
 
-      - name: gcc/clang asm
-        if: matrix.c_compiler == 'clang' || matrix.c_compiler == 'gcc'
-        continue-on-error: true
-        shell: bash
-        run: |
-          uname -m
-          cp asm/foo-template.c.in foo-template.c
-          "$c_compiler" -S -O foo-template.c
-          cat foo-template.s
-
       - name: Ставим заплатки
         shell: bash
         run: |
