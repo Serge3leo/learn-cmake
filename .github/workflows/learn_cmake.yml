@@ -236,8 +236,8 @@ jobs:
           if [ "$c_compiler" = "cl" ] ; then
             d="$build_type"
           fi
-          for h in build/hello/$d/hello* ; do
-            if [ ! -d "$h" ] ; then
+          for h in build/hello/$d/hello{,++}{,.exe,.elf} ; do
+            if [ -f "$h" ] ; then
               $cross_emul "$h"
             fi
           done

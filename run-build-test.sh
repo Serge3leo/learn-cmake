@@ -100,8 +100,8 @@ cmake -B "$build_output_dir" \
       -S . $config_verbose
 cmake --build "$build_output_dir" --config $build_type $build_verbose
 ctest --output-on-failure --build-config $build_type --test-dir "$build_output_dir"
-for h in "$build_output_dir"/hello/hello* ; do
-    if [ ! -d "$h" ] ; then
+for h in "$build_output_dir"/hello/hello{,++}{,.exe,.elf} ; do
+    if [ -f "$h" ] ; then
         $cross_emul "$h"
     fi
 done
