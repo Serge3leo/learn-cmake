@@ -1,4 +1,4 @@
-@echo off
+@if "x%VERBOSE%"=="x" echo off
 rem vim:set sw=4 ts=8 et fileencoding=utf8:
 rem SPDX-License-Identifier: BSD-2-Clause
 rem SPDX-FileCopyrightText: 2025 Сергей Леонтьев (leo@sai.msu.ru)

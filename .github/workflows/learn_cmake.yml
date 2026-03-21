@@ -78,7 +78,8 @@ jobs:
           verbose: true
 
       - if: matrix.c_compiler == 'lcc'
-        uses: Serge3leo/lcc-env-action@v0
+        uses: Serge3leo/lcc-env-action@lcc-1.29.16
+        #uses: Serge3leo/lcc-env-action@v0
         # with:
         #   lcc_version: 1.27.23
         #   qemu_e2k_version: "1.0"
