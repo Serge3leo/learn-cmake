@@ -37,25 +37,38 @@ jobs:
           - {os: ubuntu-latest, c_compiler: cl}
           - {os: ubuntu-latest, c_compiler: occ}
           - {os: ubuntu-latest, c_compiler: pocc}
-          - {os: windows-latest, c_compiler: clang}
-          - {os: windows-latest, c_compiler: gcc}
           - {os: windows-latest, c_compiler: icx}
           - {os: windows-latest, c_compiler: lcc}
           - {os: windows-latest, c_compiler: pgcc}
           - {os: windows-latest, c_compiler: suncc}
-          - {os: windows-latest, c_compiler: tcc}
-          - {c_compiler: pgcc}  # TODO: нет установки под GitHub
-          - {c_compiler: suncc}  # TODO: нет установки под GitHub
-          - {c_compiler: tcc}  # TODO: нет установки под GitHub
-          # Давим из конфигурации репозитория, можно указать macos-15-intel
-          - os: ${{ vars.DISABLE_OS1 }}
-          - os: ${{ vars.DISABLE_OS2 }}
-          - c_compiler: ${{ vars.DISABLE_CMP1 }}
-          - c_compiler: ${{ vars.DISABLE_CMP2 }}
-          - c_compiler: ${{ vars.DISABLE_CMP3 }}
-          - c_compiler: ${{ vars.DISABLE_CMP4 }}
-          - c_compiler: ${{ vars.DISABLE_CMP5 }}
-          - c_compiler: ${{ vars.DISABLE_CMP6 }}
+          - {c_compiler: pgcc}  # TODO: установка для GitHub
+          - {c_compiler: suncc}  # TODO: установка для GitHub
+          - {c_compiler: tcc}  # TODO: установка для GitHub
+          # Давим из конфигурации репозитория
+          - os: ${{ case(contains(vars.DISABLE, ' macos-15-intel,'),
+              'macos-15-intel', 'enable-os1') }}
+          - os: ${{ case(contains(vars.DISABLE, ' ubuntu-latest,'),
+              'ubuntu-latest', 'enable-os2') }}
+          - c_compiler: ${{ case(contains(vars.DISABLE, ' cl,'),
+              'cl', 'enable-c1') }}
+          - c_compiler: ${{ case(contains(vars.DISABLE, ' clang,'),
+              'clang', 'enable-c2') }}
+          - c_compiler: ${{ case(contains(vars.DISABLE, ' gcc,'),
+              'gcc', 'enable-c3') }}
+          - c_compiler: ${{ case(contains(vars.DISABLE, ' icx,'),
+              'icx', 'enable-c4') }}
+          - c_compiler: ${{ case(contains(vars.DISABLE, ' lcc,'),
+              'lcc', 'enable-c5') }}
+          - c_compiler: ${{ case(contains(vars.DISABLE, ' occ,'),
+              'occ', 'enable-c6') }}
+          - c_compiler: ${{ case(contains(vars.DISABLE, ' pgcc,'),
+              'pgcc', 'enable-c7') }}
+          - c_compiler: ${{ case(contains(vars.DISABLE, ' pocc,'),
+              'pocc', 'enable-c8') }}
+          - c_compiler: ${{ case(contains(vars.DISABLE, ' suncc,'),
+              'suncc', 'enable-c9') }}
+          - c_compiler: ${{ case(contains(vars.DISABLE, ' tcc,'),
+              'tcc', 'enable-c10') }}
         # Но всегда должна быть
         include: [{os: ubuntu-latest, c_compiler: gcc}]
 
