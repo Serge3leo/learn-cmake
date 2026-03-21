@@ -22,10 +22,18 @@ jobs:
       fail-fast: true
 
       matrix:
-        os: [macos-15-intel, ubuntu-latest, windows-latest]
+        os: [macos-15, macos-15-intel, ubuntu-latest, windows-latest]
         c_compiler: [cl, clang, gcc, icx, lcc, occ, pgcc, pocc, suncc, tcc]
         build_type: [Release]
         exclude:
+          - {os: macos-15, c_compiler: cl}
+          - {os: macos-15, c_compiler: icx}
+          - {os: macos-15, c_compiler: lcc}
+          - {os: macos-15, c_compiler: occ}
+          - {os: macos-15, c_compiler: pgcc}
+          - {os: macos-15, c_compiler: pocc}
+          - {os: macos-15, c_compiler: suncc}
+          - {os: macos-15, c_compiler: tcc}
           - {os: macos-15-intel, c_compiler: cl}
           - {os: macos-15-intel, c_compiler: icx}
           - {os: macos-15-intel, c_compiler: lcc}
@@ -45,10 +53,14 @@ jobs:
           - {c_compiler: suncc}  # TODO: установка для GitHub
           - {c_compiler: tcc}  # TODO: установка для GitHub
           # Давим из конфигурации репозитория
+          - os: ${{ case(contains(vars.DISABLE, ' macos-15,'),
+              'macos-15', 'enable-os1') }}
           - os: ${{ case(contains(vars.DISABLE, ' macos-15-intel,'),
-              'macos-15-intel', 'enable-os1') }}
+              'macos-15-intel', 'enable-os2') }}
           - os: ${{ case(contains(vars.DISABLE, ' ubuntu-latest,'),
-              'ubuntu-latest', 'enable-os2') }}
+              'ubuntu-latest', 'enable-os3') }}
+          - os: ${{ case(contains(vars.DISABLE, ' windows-latest,'),
+              'windows-latest', 'enable-os4') }}
           - c_compiler: ${{ case(contains(vars.DISABLE, ' cl,'),
               'cl', 'enable-c1') }}
           - c_compiler: ${{ case(contains(vars.DISABLE, ' clang,'),
@@ -202,6 +214,16 @@ jobs:
           cross_emul=$cross_emul
           cmake_add=$cmake_add
           _end_of_github_env_
+
+      - name: gcc/clang asm
+        if: matrix.c_compiler == 'clang' || matrix.c_compiler == 'gcc'
+        continue-on-error: true
+        shell: bash
+        run: |
+          uname -m
+          cp asm/foo-template.c.in foo-template.c
+          "$c_compiler" -S -O foo-template.c
+          cat foo-template.s
 
       - name: Ставим заплатки
         shell: bash
