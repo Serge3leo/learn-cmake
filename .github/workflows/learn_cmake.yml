@@ -237,5 +237,7 @@ jobs:
             d="$build_type"
           fi
           for h in build/hello/$d/hello* ; do
-            $cross_emul "$h"
+            if [ ! -d "$h" ] ; then
+              $cross_emul "$h"
+            fi
           done
