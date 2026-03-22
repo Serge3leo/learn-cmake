@@ -122,7 +122,6 @@ jobs:
           version: 14.0-rc1-git-lfs
           # version: 12.0.2  # WARNING: Needed windows-2022
           verbose: true
-          msystem: skip  # Может и так ничего
 
       - name: Имена компиляторов с версиями, если необходимо
         shell: bash
