@@ -8,7 +8,8 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
                     PWSTR pCmdLine, int nCmdShow);
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
-                   PSTR /*lpCmdLine*/, int nCmdShow)
+                   PSTR lpCmdLine, int nCmdShow)
 {
+    (void)lpCmdLine;
     return wWinMain(hInstance, hPrevInstance, GetCommandLineW(), nCmdShow);
 }
