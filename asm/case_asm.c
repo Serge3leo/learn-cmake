@@ -12,7 +12,7 @@ int main(void) {
     int in = 1917;
     int out;
     if (&out != memcpy(&out, &in, sizeof(out)) || 1917 != out) {
-        printf("FAIL: memcpy: странное\n");
+        printf("FAIL: memcpy: странное %d\n", out);
         exit(EXIT_FAILURE);
     }
     if (foo() == FOO_ASM) {
