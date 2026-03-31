@@ -11,11 +11,13 @@ project(learn_cmake
         LANGUAGES C
 )
 
-set(CMAKE_C_STANDARD 23)
+#set(CMAKE_C_STANDARD 23)
 
 message("CMAKE_C_STANDARD_DEFAULT=${CMAKE_C_STANDARD_DEFAULT}")
 message("CMAKE_C_EXTENSIONS_DEFAULT=${CMAKE_C_EXTENSIONS_DEFAULT}")
 message("CMAKE_C_COMPILE_FEATURES=${CMAKE_C_COMPILE_FEATURES}")
+message("CMAKE_C_STANDARD=${CMAKE_C_STANDARD}")
+message("CMAKE_C_EXTENSIONS=${CMAKE_C_EXTENSIONS}")
 if ("$ENV{VERBOSE}")
     message("CMAKE_C_COMPILER_VERSION=${CMAKE_C_COMPILER_VERSION}")
     message("CMAKE_C_STANDARD_LATEST=${CMAKE_C_STANDARD_LATEST}")
@@ -56,6 +58,16 @@ if ("$ENV{VERBOSE}")
     foreach (_variableName ${_variableNames})
         message(STATUS "${_variableName}=${${_variableName}}")
     endforeach()
+endif ()
+
+include(CheckFunctionExists)
+check_function_exists (fopen HAVE_FOPEN)
+message("HAVE_FOPEN=${HAVE_FOPEN}")
+check_function_exists (memcpy HAVE_MEMCPY)
+message("HAVE_MEMCPY=${HAVE_MEMCPY}")
+if (NOT HAVE_FOPEN OR
+    (NOT HAVE_MEMCPY AND NOT CMAKE_C_COMPILER_ID STREQUAL PellesC))
+    message(FATAL_ERROR "HAVE_FOPEN=${HAVE_FOPEN} HAVE_MEMCPY=${HAVE_MEMCPY}")
 endif ()
 
 add_subdirectory(hello)

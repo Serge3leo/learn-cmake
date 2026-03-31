@@ -4,10 +4,17 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "foo.h"
 
 int main(void) {
+    int in = 1917;
+    int out;
+    if (&out != memcpy(&out, &in, sizeof(out)) || 1917 != out) {
+        printf("FAIL: memcpy: странное\n");
+        exit(EXIT_FAILURE);
+    }
     if (foo() == FOO_ASM) {
         printf("Хорь, ассемблерный Фу.\n");
     } else {

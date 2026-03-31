@@ -32,12 +32,18 @@ endif ()
 # При использовании проектов MSVC с генератором `Visual Studio NN YYYY` в
 # полученных проектах уже есть определение обеих символов.
 
+message("win32gui: CMAKE_C_STANDARD_DEFAULT=${CMAKE_C_STANDARD_DEFAULT}")
+message("win32gui: CMAKE_C_EXTENSIONS_DEFAULT=${CMAKE_C_EXTENSIONS_DEFAULT}")
+message("win32gui: CMAKE_C_COMPILE_FEATURES=${CMAKE_C_COMPILE_FEATURES}")
+message("win32gui: CMAKE_C_STANDARD=${CMAKE_C_STANDARD}")
+message("win32gui: CMAKE_C_EXTENSIONS=${CMAKE_C_EXTENSIONS}")
+
 add_executable(main main.c main.rc ${occ_workaround})
 target_link_libraries(main Comctl32)
 set_target_properties(main PROPERTIES
                       COMPILE_DEFINITIONS "_UNICODE=1;UNICODE=1"
                       WIN32_EXECUTABLE TRUE
-                      C_EXTENSIONS ON)  # For Pelles C
+                      )  #C_EXTENSIONS ON)  # For Pelles C
 if ("${CMAKE_GENERATOR}" MATCHES "Makefiles")
     set(DIR "${CMAKE_CURRENT_BINARY_DIR}")
 else ()

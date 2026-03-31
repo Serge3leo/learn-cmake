@@ -24,7 +24,11 @@ elseif (CMAKE_C_COMPILER_ID STREQUAL "MSVC")
 elseif (CMAKE_C_COMPILER_ID STREQUAL "OrangeC")
     set(ASMS foo-nasm32.asm)  # OAsm ... NASM are not 100% compatible with it
 elseif (CMAKE_C_COMPILER_ID STREQUAL "PellesC")
-    set(ASMS foo-masm64.asm)  # similar to MASM, but there are deliberate differences
+    if (CMAKE_SYSTEM_PROCESSOR MATCHES 64)
+        set(ASMS foo-masm64.asm)  # similar to MASM, but there are deliberate differences
+    else ()
+        set(ASMS foo-masm32.asm)
+    endif ()
 elseif (APPLE)
     if (CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64")
         set(ASMS foo-_att-x64.s)

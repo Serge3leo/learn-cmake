@@ -5,7 +5,7 @@ rem SPDX-FileCopyrightText: 2025 Сергей Леонтьев (leo@sai.msu.ru)
 
 if NOT "x%VERBOSE%" == "x" (
     set config_verbose=--log-level=VERBOSE --debug-trycompile
-    set build_verbose=--verbose
+    set build_verbose=--verbose %
 )
 if "x%build_type%" == "x" (
     set build_type=Release
@@ -54,12 +54,12 @@ cmake -B %build_output_dir% ^
         %cxx_flags% ^
         -G "%generator%" ^
         -DCMAKE_BUILD_TYPE=%build_type% ^
-        -S . %config_verbose%
+        -S . %config_verbose% %CMAKE_ARGS%
 if errorlevel 1 exit /b
-cmake --build %build_output_dir% --config %build_type% %build_verbose%
+cmake --build %build_output_dir% --config %build_type% %build_verbose% %BUILD_ARGS%
 if errorlevel 1 exit /b
 ctest --output-on-failure --build-config %build_type% ^
-      --test-dir %build_output_dir%
+      --test-dir %build_output_dir% %CTEST_ARGS%
 if errorlevel 1 exit /b
 for /r "%build_hello_dir%" %%e in (hello*.exe) do (
     echo %%e
