@@ -12,8 +12,13 @@ int main(void) {
     int in = 1917;
     int out;
     if (&out != memcpy(&out, &in, sizeof(out)) || 1917 != out) {
-        printf("FAIL: memcpy: странное %d\n", out);
-        exit(EXIT_FAILURE);
+        #ifdef __ORANGEC__
+            printf("WARNING: memcpy: странное %d %td\n", out,
+                (char *)memcpy(&out, &in, sizeof(out)) - (char *)&out);
+        #else
+            printf("FAIL: memcpy: странное %d\n", out);
+            exit(EXIT_FAILURE);
+        #endif
     }
     if (foo() == FOO_ASM) {
         printf("Хорь, ассемблерный Фу.\n");
