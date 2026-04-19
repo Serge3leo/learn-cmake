@@ -21,6 +21,8 @@ message("CMAKE_C_EXTENSIONS=${CMAKE_C_EXTENSIONS}")
 if ("$ENV{VERBOSE}")
     message("CMAKE_C_COMPILER_VERSION=${CMAKE_C_COMPILER_VERSION}")
     message("CMAKE_C_STANDARD_LATEST=${CMAKE_C_STANDARD_LATEST}")
+    message("CMAKE_C_STANDARD_COMPUTED_DEFAULT=${CMAKE_C_STANDARD_COMPUTED_DEFAULT}")
+    message("CMAKE_C_EXTENSIONS_COMPUTED_DEFAULT=${CMAKE_C_EXTENSIONS_COMPUTED_DEFAULT}")
     # cmake version 3.31.6
     # cl: c_std_90;c_function_prototypes;c_std_99;c_restrict;c_variadic_macros;c_std_11;c_static_assert;c_std_17
     #        CMAKE_C_EXTENSIONS_DEFAULT=OFF
@@ -58,16 +60,6 @@ if ("$ENV{VERBOSE}")
     foreach (_variableName ${_variableNames})
         message(STATUS "${_variableName}=${${_variableName}}")
     endforeach()
-endif ()
-
-include(CheckFunctionExists)
-check_function_exists (fopen HAVE_FOPEN)
-message("HAVE_FOPEN=${HAVE_FOPEN}")
-check_function_exists (memcpy HAVE_MEMCPY)
-message("HAVE_MEMCPY=${HAVE_MEMCPY}")
-if (NOT HAVE_FOPEN OR
-    (NOT HAVE_MEMCPY AND NOT CMAKE_C_COMPILER_ID STREQUAL PellesC))
-    message(FATAL_ERROR "HAVE_FOPEN=${HAVE_FOPEN} HAVE_MEMCPY=${HAVE_MEMCPY}")
 endif ()
 
 add_subdirectory(hello)

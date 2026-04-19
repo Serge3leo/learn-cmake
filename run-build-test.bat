@@ -21,7 +21,7 @@ if "x%2" == "x" (
         ) else if "%VisualStudioVersion%" == "18.0" (
             set generator=Visual Studio 18 2026
         ) else (
-            echo "VisualStudioVersion=%VisualStudioVersion%: uninplemented" 1>&2
+            echo "VisualStudioVersion=%VisualStudioVersion%: unimplemented" 1>&2
             exit /b 3
         )
     ) else if "%1" == "clang" (
