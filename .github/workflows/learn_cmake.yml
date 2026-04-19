@@ -118,8 +118,7 @@ jobs:
       - if: matrix.c_compiler == 'pocc'
         uses: Serge3leo/pellesc-setup@v0
         with:
-          version: 14.0-rc2-git-lfs
-          # version: 14.0-rc1-git-lfs
+          # version: 14.00-git-lfs  # default
           # version: 13.01-git-lfs
           # version: 12.0.2  # WARNING: Needed windows-2022
           verbose: true
