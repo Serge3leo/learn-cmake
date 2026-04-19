@@ -10,45 +10,79 @@ if NOT "x%VERBOSE%" == "x" (
 if "x%build_type%" == "x" (
     set build_type=Release
 )
-if "%1" == "cl" (
-    set build_output_dir=build\win_cl_%VisualStudioVersion%
-    set cxx_flags=-DCMAKE_CXX_COMPILER=cl
-    if "%VisualStudioVersion%" == "16.0" (
-        set generator=Visual Studio 16 2019
-    ) else if "%VisualStudioVersion%" == "17.0" (
-        set generator=Visual Studio 17 2022
-    ) else if "%VisualStudioVersion%" == "18.0" (
-        set generator=Visual Studio 18 2026
+if "x%2" == "x" (
+    if "%1" == "cl" (
+        set build_output_dir=build\win_%1_%VisualStudioVersion%
+        set cxx_flags=-DCMAKE_CXX_COMPILER=cl
+        if "%VisualStudioVersion%" == "16.0" (
+            set generator=Visual Studio 16 2019
+        ) else if "%VisualStudioVersion%" == "17.0" (
+            set generator=Visual Studio 17 2022
+        ) else if "%VisualStudioVersion%" == "18.0" (
+            set generator=Visual Studio 18 2026
+        ) else (
+            echo "VisualStudioVersion=%VisualStudioVersion%: uninplemented" 1>&2
+            exit /b 3
+        )
+    ) else if "%1" == "clang" (
+        set build_output_dir=build\win_%1
+        set cxx_flags=-DCMAKE_CXX_COMPILER=clang++
+        set generator=MSYS Makefiles
+    ) else if "%1" == "gcc" (
+        set build_output_dir=build\win_%1
+        set cxx_flags=-DCMAKE_CXX_COMPILER=g++
+        set generator=MSYS Makefiles
+    ) else if "%1" == "occ" (
+        set build_output_dir=build\win_%1
+        set cxx_flags=-DCMAKE_CXX_COMPILER=occ
+        set generator=MSYS Makefiles
+    ) else if "%1" == "pocc" (
+        set build_output_dir=build\win_%1
+        set cxx_flags=-DLEARN_CMAKE_CXX_ENABLE=OFF
+        set generator=MSYS Makefiles
+    ) else if "%1" == "cc" (
+        set build_output_dir=build\win_%1
+        set cxx_flags=-DLEARN_CMAKE_CXX_ENABLE=OFF
+        set generator=MSYS Makefiles
     ) else (
-        echo "VisualStudioVersion=%VisualStudioVersion%: uninplemented" 1>&2
-        exit /b 3
+        echo "Usage: %0 <cc|cl|clang|gcc|occ|pocc> [ninja]" 1>&2
+        exit /b 4
     )
-) else if "%1" == "clang" (
-    set build_output_dir=build\win_clang
-    set cxx_flags=-DCMAKE_CXX_COMPILER=clang++
-    set generator=MSYS Makefiles
-) else if "%1" == "gcc" (
-    set build_output_dir=build\win_gcc
-    set cxx_flags=-DCMAKE_CXX_COMPILER=g++
-    set generator=MSYS Makefiles
-) else if "%1" == "occ" (
-    set build_output_dir=build\win_occ
-    set cxx_flags=-DCMAKE_CXX_COMPILER=occ
-    set generator=MSYS Makefiles
-) else if "%1" == "pocc" (
-    set build_output_dir=build\win_pocc
-    set cxx_flags=-DLEARN_CMAKE_CXX_ENABLE=OFF
-    set generator=MSYS Makefiles
+    if "%1" == "cl" (
+        set build_hello_dir=%build_output_dir%\hello\%build_type%
+    ) else (
+        set build_hello_dir=%build_output_dir%\hello
+    )
 ) else (
-    echo .
-    exit /b 4
-)
-if "%1" == "cl" (
-    set build_hello_dir=%build_output_dir%\hello\%build_type%
-) else (
+    if /i "%2" neq "Ninja" (
+        echo "Usage: %0 <cc|cl|clang|gcc|occ|pocc> [ninja]" 1>&2
+        exit /b 4
+    )
+    set generator=Ninja
+    if "%1" == "cl" (
+        set build_output_dir=build\wninja_%1_%VisualStudioVersion%
+        set cxx_flags=-DCMAKE_CXX_COMPILER=cl
+    ) else if "%1" == "clang" (
+        set build_output_dir=build\wninja_%1
+        set cxx_flags=-DCMAKE_CXX_COMPILER=clang++
+    ) else if "%1" == "gcc" (
+        set build_output_dir=build\wninja_%1
+        set cxx_flags=-DCMAKE_CXX_COMPILER=g++
+    ) else if "%1" == "occ" (
+        set build_output_dir=build\wninja_%1
+        set cxx_flags=-DCMAKE_CXX_COMPILER=occ
+    ) else if "%1" == "pocc" (
+        set build_output_dir=build\wninja_%1
+        set cxx_flags=-DLEARN_CMAKE_CXX_ENABLE=OFF
+    ) else if "%1" == "cc" (
+        set build_output_dir=build\wninja_%1
+        set cxx_flags=-DLEARN_CMAKE_CXX_ENABLE=OFF
+    ) else (
+        echo "Usage: %0 <cc|cl|clang|gcc|occ|pocc> [ninja]" 1>&2
+        exit /b 4
+    )
     set build_hello_dir=%build_output_dir%\hello
 )
-
 cmake -B %build_output_dir% ^
         -DCMAKE_C_COMPILER=%1 ^
         %cxx_flags% ^
