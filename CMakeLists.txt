@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # SPDX-FileCopyrightText: 2026 Сергей Леонтьев (leo@sai.msu.ru)
 
+message("CMAKE_COMMAND=${CMAKE_COMMAND} CMAKE_VERSION=${CMAKE_VERSION}")
 cmake_minimum_required (VERSION 3.25)
 project(learn_cmake
         VERSION 0.1.0

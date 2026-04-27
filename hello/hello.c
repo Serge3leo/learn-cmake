@@ -37,6 +37,8 @@ int main(void) {
     printf("\n---\n");
     DUMP(TEST_DEFINITIONS);
     DUMP(TEST_DEFINITIONS_VAL);
+    printf("sizeof(void *) = %zu, sizeof(size_t) = %zu, sizeof(int) = %zu\n",
+            sizeof(void *), sizeof(size_t), sizeof(int));
     #if !defined(__ORANGEC__) || __ORANGEC__ > 700
         // https://github.com/LADSoft/OrangeC/issues/1143#issue-4188704192
         int in = 1917;

@@ -6,7 +6,9 @@ if (NOT WIN32)
     return ()
 endif ()
 
-if (CMAKE_C_COMPILER_ID STREQUAL OrangeC)
+if (MINGW AND NOT MINGW32CE)  # Need for MSYS2 gcc/clang
+    add_link_options(-municode)
+elseif (CMAKE_C_COMPILER_ID STREQUAL OrangeC)
     if ("${CMAKE_C_COMPILER_VERSION}" VERSION_LESS "7.0")
         message("win32gui: ORC broken before OrangeC 7.0, skip")
         return ()
@@ -18,8 +20,14 @@ if (CMAKE_C_COMPILER_ID STREQUAL OrangeC)
     # - непонятная ошибка с `#include <richedit.h>`, см. `main.rc`;
     # - `orc` отвергает флаг `-I` (CMAKE_INCLUDE_FLAG_RC);
     set(occ_workaround occ_workarond.c)
-elseif (MINGW AND NOT MINGW32CE)  # Need for MSYS2 gcc/clang
-    add_link_options(-municode)
+elseif (CMAKE_C_COMPILER_ID STREQUAL PellesC)
+    add_compile_options(
+        -Ze -D__STDC__=1 -D__STDC_VERSION__=__POCC_STDC_VERSION__)
+    if (CMAKE_VERSION STREQUAL "4.3.20260426-git")  # TODO tests
+        link_libraries(kernel32.lib user32.lib gdi32.lib winspool.lib
+            shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib
+            advapi32.lib comctl32.lib delayimp64.lib)
+    endif ()
 endif ()
 
 # https://learn.microsoft.com/en-us/cpp/text/unicode-programming-summary

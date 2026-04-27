@@ -3,6 +3,7 @@ rem vim:set sw=4 ts=8 et fileencoding=utf8:
 rem SPDX-License-Identifier: BSD-2-Clause
 rem SPDX-FileCopyrightText: 2025 Сергей Леонтьев (leo@sai.msu.ru)
 
+setlocal enabledelayedexpansion
 if NOT "x%VERBOSE%" == "x" (
     set config_verbose=--log-level=VERBOSE --debug-trycompile
     set build_verbose=--verbose %
@@ -49,9 +50,9 @@ if "x%2" == "x" (
         exit /b 4
     )
     if "%1" == "cl" (
-        set build_hello_dir=%build_output_dir%\hello\%build_type%
+        set build_hello_dir=!build_output_dir!\hello\!build_type!
     ) else (
-        set build_hello_dir=%build_output_dir%\hello
+        set build_hello_dir=!build_output_dir!\hello
     )
 ) else (
     if /i "%2" neq "Ninja" (
@@ -81,7 +82,7 @@ if "x%2" == "x" (
         echo "Usage: %0 <cc|cl|clang|gcc|occ|pocc> [ninja]" 1>&2
         exit /b 4
     )
-    set build_hello_dir=%build_output_dir%\hello
+    set build_hello_dir=!build_output_dir!\hello
 )
 cmake -B %build_output_dir% ^
         -DCMAKE_C_COMPILER=%1 ^
@@ -89,14 +90,27 @@ cmake -B %build_output_dir% ^
         -G "%generator%" ^
         -DCMAKE_BUILD_TYPE=%build_type% ^
         -S . %config_verbose% %CMAKE_ARGS%
-if errorlevel 1 exit /b
+if errorlevel 1 (
+    echo "cmake: errorlevel=%errorlevel%"
+    exit /b
+)
 cmake --build %build_output_dir% --config %build_type% %build_verbose% %BUILD_ARGS%
-if errorlevel 1 exit /b
+if errorlevel 1 (
+    echo "cmake --build: errorlevel=%errorlevel%"
+    exit /b
+)
 ctest --output-on-failure --build-config %build_type% ^
       --test-dir %build_output_dir% %CTEST_ARGS%
-if errorlevel 1 exit /b
+if errorlevel 1 (
+    echo "ctest: errorlevel=%errorlevel%"
+    exit /b
+)
+echo "Find hello*.exe in %build_hello_dir%"
 for /r "%build_hello_dir%" %%e in (hello*.exe) do (
     echo %%e
     %%e
-    if errorlevel 1 exit /b
+    if errorlevel 1 (
+        echo "%%e: errorlevel=%errorlevel%"
+        exit /b
+    )
 )

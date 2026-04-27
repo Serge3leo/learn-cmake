@@ -13,6 +13,8 @@ set(HDRS foo.h)
 
 if (CMAKE_C_COMPILER_ID STREQUAL "MSVC")
     enable_language(ASM_MASM)  # CMP0194 recommends using `ml` from VS
+elseif (CMAKE_C_COMPILER_ID STREQUAL "PellesC")
+    enable_language(ASM_POASM)
 else ()
     enable_language(ASM)
 endif ()
