@@ -26,7 +26,7 @@
 static LRESULT WINAPI MainWndProc(HWND, UINT, WPARAM, LPARAM);
 static void Main_OnPaint(HWND);
 static void Main_OnCommand(HWND, int, HWND, UINT);
-static void Main_OnTimer(HWND, UINT);
+static void Main_OnTimer(HWND, UINT_PTR);
 static void Main_OnDestroy(HWND);
 static LRESULT WINAPI AboutDlgProc(HWND, UINT, WPARAM, LPARAM);
 
@@ -220,7 +220,7 @@ static LRESULT CALLBACK MainWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
     {
         HANDLE_MSG(hwnd, WM_PAINT, Main_OnPaint);
         HANDLE_MSG(hwnd, WM_COMMAND, Main_OnCommand);
-		HANDLE_MSG(hwnd, WM_TIMER, Main_OnTimer);
+	HANDLE_MSG(hwnd, WM_TIMER, Main_OnTimer);
         HANDLE_MSG(hwnd, WM_DESTROY, Main_OnDestroy);
         /* TODO: enter more messages here */
         default:
@@ -284,7 +284,7 @@ static void Main_OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
  ****************************************************************************/
 
 
-static void Main_OnTimer(HWND hwnd, UINT id)
+static void Main_OnTimer(HWND hwnd, UINT_PTR id)
 {
 	SendMessage(g_pb.hwnd, PBM_STEPIT, 0, 0);
 	if (0 == --g_pb.steps) {

@@ -36,4 +36,6 @@ int main(void) {
     printf("\n---\n");
     DUMP(TEST_DEFINITIONS);
     DUMP(TEST_DEFINITIONS_VAL);
+    printf("sizeof(void *) = %zu, sizeof(size_t) = %zu, sizeof(int) = %zu\n",
+            sizeof(void *), sizeof(size_t), sizeof(int));
 }

@@ -110,13 +110,13 @@ jobs:
         #   qemu_e2k_version: "1.0"
 
       - if: matrix.c_compiler == 'occ'
-        uses: Serge3leo/orangec-setup@v0
+        uses: Serge3leo/orangec-setup@v1
         with:
           # version: 6.73.1
           verbose: true
 
       - if: matrix.c_compiler == 'pocc'
-        uses: Serge3leo/pellesc-setup@v0
+        uses: Serge3leo/pellesc-setup@v1
         with:
           # version: 14.10-git-lfs  # default
           # version: 13.01-git-lfs
