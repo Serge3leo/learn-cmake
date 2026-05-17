@@ -29,10 +29,6 @@ target_sources(
       BASE_DIRS ${CMAKE_CURRENT_BINARY_DIR}
       FILES ${CMAKE_CURRENT_BINARY_DIR}/gfoo_export.h
 )
-if (CMAKE_C_COMPILER_ID STREQUAL PellesC)
-    target_compile_options(gfoo PUBLIC
-        -Ze -D__STDC__=1 -D__STDC_VERSION__=__POCC_STDC_VERSION__)
-endif ()
 add_executable(case_gdynamic case_dynamic.c)
 #set_target_properties(case_gdynamic PROPERTIES C_EXTENSIONS ON)  # TODO set_property?
 target_link_libraries(case_gdynamic gfoo)

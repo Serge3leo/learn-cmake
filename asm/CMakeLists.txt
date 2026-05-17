@@ -23,6 +23,7 @@ if (CMAKE_C_COMPILER_ID STREQUAL "LCC")
     set(ASMS foo-elbrus.s)
 elseif (CMAKE_C_COMPILER_ID STREQUAL "MSVC" OR
         CMAKE_C_COMPILER_ID STREQUAL "PellesC")
+    message("CMAKE_SYSTEM_PROCESSOR=${CMAKE_SYSTEM_PROCESSOR}")
     if (CMAKE_SYSTEM_PROCESSOR MATCHES 64)
         set(ASMS foo-masm64.asm)  # similar to MASM, but there are deliberate differences
     else ()
