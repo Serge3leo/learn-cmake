@@ -7,13 +7,8 @@
 
 add_library(gfoo SHARED)
 
-# У PellesC необходимо включить расширения для gfoo_export.h
-# (generate_export_header(gfoo)) TODO set_property?
-#set_target_properties(gfoo PROPERTIES C_EXTENSIONS ON)
-
-# Так же, LCC: ADD_LIBRARY called with SHARED option but the target
-# platform does not support dynamic linking.  Building a STATIC library
-# instead.
+# LCC: ADD_LIBRARY called with SHARED option but the target platform does not
+# support dynamic linking.  Building a STATIC library instead.
 
 include(GenerateExportHeader)
 generate_export_header(gfoo)
@@ -30,7 +25,6 @@ target_sources(
       FILES ${CMAKE_CURRENT_BINARY_DIR}/gfoo_export.h
 )
 add_executable(case_gdynamic case_dynamic.c)
-#set_target_properties(case_gdynamic PROPERTIES C_EXTENSIONS ON)  # TODO set_property?
 target_link_libraries(case_gdynamic gfoo)
 if (CMAKE_C_COMPILER_ID STREQUAL TinyCC)  # TODO: libgfoo.so: cannot open...
     add_test(NAME case_gdynamic

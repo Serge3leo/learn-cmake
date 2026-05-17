@@ -6,7 +6,7 @@ rem SPDX-FileCopyrightText: 2025 Сергей Леонтьев (leo@sai.msu.ru)
 setlocal enabledelayedexpansion
 if NOT "x%VERBOSE%" == "x" (
     set config_verbose=--log-level=VERBOSE --debug-trycompile
-    set build_verbose=--verbose %
+    set build_verbose=--verbose
 )
 if "x%build_type%" == "x" (
     set build_type=Release

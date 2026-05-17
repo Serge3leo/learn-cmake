@@ -14,7 +14,6 @@ if (CMAKE_C_COMPILER_ID STREQUAL OrangeC)
         "$<IF:$<BOOL:$<TARGET_PROPERTY:WINDOWS_EXPORT_ALL_SYMBOLS>>,--export-all-symbols,>")
     # TODO, но как это выражение использовать в
     # CMAKE_${lang}_CREATE_SHARED_LIBRARY или CMAKE_SHARED_LINKER_FLAGS ?
-
 elseif (WIN32 AND NOT MINGW AND NOT CMAKE_SUPPORT_WINDOWS_EXPORT_ALL_SYMBOLS)
     message("WARNING: ${CMAKE_C_COMPILER_ID}: don't support"
             " CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS, skipped")
