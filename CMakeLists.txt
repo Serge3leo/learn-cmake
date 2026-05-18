@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: BSD-2-Clause
 # SPDX-FileCopyrightText: 2026 Сергей Леонтьев (leo@sai.msu.ru)
 
+message("CMAKE_COMMAND=${CMAKE_COMMAND} CMAKE_VERSION=${CMAKE_VERSION}")
 cmake_minimum_required (VERSION 3.25)
 project(learn_cmake
         VERSION 0.1.0
@@ -11,14 +12,16 @@ project(learn_cmake
         LANGUAGES C
 )
 
-set(CMAKE_C_STANDARD 23)
-
 message("CMAKE_C_STANDARD_DEFAULT=${CMAKE_C_STANDARD_DEFAULT}")
 message("CMAKE_C_EXTENSIONS_DEFAULT=${CMAKE_C_EXTENSIONS_DEFAULT}")
 message("CMAKE_C_COMPILE_FEATURES=${CMAKE_C_COMPILE_FEATURES}")
+message("CMAKE_C_STANDARD=${CMAKE_C_STANDARD}")
+message("CMAKE_C_EXTENSIONS=${CMAKE_C_EXTENSIONS}")
 if ("$ENV{VERBOSE}")
     message("CMAKE_C_COMPILER_VERSION=${CMAKE_C_COMPILER_VERSION}")
     message("CMAKE_C_STANDARD_LATEST=${CMAKE_C_STANDARD_LATEST}")
+    message("CMAKE_C_STANDARD_COMPUTED_DEFAULT=${CMAKE_C_STANDARD_COMPUTED_DEFAULT}")
+    message("CMAKE_C_EXTENSIONS_COMPUTED_DEFAULT=${CMAKE_C_EXTENSIONS_COMPUTED_DEFAULT}")
     # cmake version 3.31.6
     # cl: c_std_90;c_function_prototypes;c_std_99;c_restrict;c_variadic_macros;c_std_11;c_static_assert;c_std_17
     #        CMAKE_C_EXTENSIONS_DEFAULT=OFF

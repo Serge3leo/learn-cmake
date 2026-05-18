@@ -26,7 +26,7 @@
 static LRESULT WINAPI MainWndProc(HWND, UINT, WPARAM, LPARAM);
 static void Main_OnPaint(HWND);
 static void Main_OnCommand(HWND, int, HWND, UINT);
-static void Main_OnTimer(HWND, UINT);
+static void Main_OnTimer(HWND, UINT_PTR);
 static void Main_OnDestroy(HWND);
 static LRESULT WINAPI AboutDlgProc(HWND, UINT, WPARAM, LPARAM);
 
@@ -35,12 +35,12 @@ static LRESULT WINAPI AboutDlgProc(HWND, UINT, WPARAM, LPARAM);
 static HANDLE ghInstance;
 
 static struct pb_t {
-	UINT timeout;
-	UINT steps;
-	UINT elapse;
-	HWND hwnd;
+    UINT timeout;
+    UINT steps;
+    UINT elapse;
+    HWND hwnd;
 } g_pb = {
-	2, 10
+    2, 10
 };
 
 /****************************************************************************
@@ -120,21 +120,21 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, WCHAR *pszCm
     ShowWindow(hwnd, nCmdShow);
     UpdateWindow(hwnd);
 
-	const HWND hwndParent = hwnd;
-	RECT rcClient;
-	GetClientRect(hwndParent, &rcClient);
+    const HWND hwndParent = hwnd;
+    RECT rcClient;
+    GetClientRect(hwndParent, &rcClient);
 
-	int cyVScroll = GetSystemMetrics(SM_CYVSCROLL);
-	g_pb.hwnd = CreateWindowEx(0, PROGRESS_CLASS, (LPTSTR)NULL, WS_CHILD | WS_VISIBLE,
+    int cyVScroll = GetSystemMetrics(SM_CYVSCROLL);
+    g_pb.hwnd = CreateWindowEx(0, PROGRESS_CLASS, (LPTSTR)NULL, WS_CHILD | WS_VISIBLE,
                                rcClient.left, rcClient.bottom - cyVScroll,
                                rcClient.right, cyVScroll,
                                hwndParent, (HMENU)0, ghInstance, NULL);
-	g_pb.elapse = g_pb.timeout*1000/g_pb.steps;
-	SendMessage(g_pb.hwnd, PBM_SETRANGE, 0, MAKELPARAM(0, g_pb.steps));
+    g_pb.elapse = g_pb.timeout*1000/g_pb.steps;
+    SendMessage(g_pb.hwnd, PBM_SETRANGE, 0, MAKELPARAM(0, g_pb.steps));
     SendMessage(g_pb.hwnd, PBM_SETSTEP,  1, 0);
-	if (!SetTimer(hwnd, IDT_PB, g_pb.elapse, NULL)) {
-		FatalAppExit(0, L"No timer is available.");
-	}
+    if (!SetTimer(hwnd, IDT_PB, g_pb.elapse, NULL)) {
+        FatalAppExit(0, L"No timer is available.");
+    }
 
     /* Pump messages until we are done */
 #if 0
@@ -169,12 +169,12 @@ int APIENTRY wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, WCHAR *pszCm
 
     FILE *fu = fopen("unicode.txt", "w");
     if (!fu) {
-	FatalAppExit(0, L"Can't create 'unicode.txt'");
+        FatalAppExit(0, L"Can't create 'unicode.txt'");
     }
     #define STR(A)  #A
     #define DUMP(X) printf(#X "=%s\n", STR(X))
     #define P(N)  \
-	((void)(!strcmp(#N, STR(N)) ? 0 : fprintf(fu, "%s=%s ", #N, STR(N))))
+        ((void)(!strcmp(#N, STR(N)) ? 0 : fprintf(fu, "%s=%s ", #N, STR(N))))
     #define P2(N1, N2)  ((void)(!strcmp(#N1, STR(N1)) ? 0 : fprintf(fu, \
                                 "%s.%s=%s.%s ", #N1, #N1, STR(N1), STR(N2))))
     P2(__clang_major__, __clang_minor__);
@@ -220,7 +220,7 @@ static LRESULT CALLBACK MainWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM l
     {
         HANDLE_MSG(hwnd, WM_PAINT, Main_OnPaint);
         HANDLE_MSG(hwnd, WM_COMMAND, Main_OnCommand);
-		HANDLE_MSG(hwnd, WM_TIMER, Main_OnTimer);
+        HANDLE_MSG(hwnd, WM_TIMER, Main_OnTimer);
         HANDLE_MSG(hwnd, WM_DESTROY, Main_OnDestroy);
         /* TODO: enter more messages here */
         default:
@@ -284,14 +284,14 @@ static void Main_OnCommand(HWND hwnd, int id, HWND hwndCtl, UINT codeNotify)
  ****************************************************************************/
 
 
-static void Main_OnTimer(HWND hwnd, UINT id)
+static void Main_OnTimer(HWND hwnd, UINT_PTR id)
 {
-	SendMessage(g_pb.hwnd, PBM_STEPIT, 0, 0);
-	if (0 == --g_pb.steps) {
-		DestroyWindow(hwnd);
-	} else if (!SetTimer(hwnd, IDT_PB, g_pb.elapse, NULL)) {
-		FatalAppExit(0, L"No timer is available.");
-	}
+    SendMessage(g_pb.hwnd, PBM_STEPIT, 0, 0);
+    if (0 == --g_pb.steps) {
+        DestroyWindow(hwnd);
+    } else if (!SetTimer(hwnd, IDT_PB, g_pb.elapse, NULL)) {
+        FatalAppExit(0, L"No timer is available.");
+    }
 }
 
 /****************************************************************************
@@ -307,8 +307,8 @@ static void Main_OnTimer(HWND hwnd, UINT id)
 
 static void Main_OnDestroy(HWND hwnd)
 {
-	KillTimer(hwnd, IDT_PB);
-	DestroyWindow(g_pb.hwnd);
+    KillTimer(hwnd, IDT_PB);
+    DestroyWindow(g_pb.hwnd);
     PostQuitMessage(0);
 }
 

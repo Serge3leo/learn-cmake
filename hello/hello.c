@@ -3,6 +3,7 @@
 // SPDX-FileCopyrightText: 2025 Сергей Леонтьев (leo@sai.msu.ru)
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #define STR(A)  #A
@@ -23,6 +24,7 @@ int main(void) {
     P2(__NVCOMPILER_MAJOR__, __NVCOMPILER_MINOR__);
     P(__ORANGEC__);
     P(__POCC__);
+    P(__POCC_STDC_VERSION__);
     P(__SUNPRO_C);
     P(__SUNPRO_CC);
     P(__TINYC__);
@@ -35,4 +37,15 @@ int main(void) {
     printf("\n---\n");
     DUMP(TEST_DEFINITIONS);
     DUMP(TEST_DEFINITIONS_VAL);
+    printf("sizeof(void *) = %zu, sizeof(size_t) = %zu, sizeof(int) = %zu\n",
+            sizeof(void *), sizeof(size_t), sizeof(int));
+    #if !defined(__ORANGEC__) || __ORANGEC__ > 700
+        // https://github.com/LADSoft/OrangeC/issues/1143#issue-4188704192
+        int in = 1917;
+        int out;
+        if (&out != memcpy(&out, &in, sizeof(out)) || 1917 != out) {
+            printf("FAIL: memcpy: странное\n");
+            exit(EXIT_FAILURE);
+        }
+    #endif
 }

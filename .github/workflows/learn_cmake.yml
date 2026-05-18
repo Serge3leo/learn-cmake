@@ -110,15 +110,16 @@ jobs:
         #   qemu_e2k_version: "1.0"
 
       - if: matrix.c_compiler == 'occ'
-        uses: Serge3leo/orangec-setup@v0
+        uses: Serge3leo/orangec-setup@v1
         with:
           # version: 6.73.1
           verbose: true
 
       - if: matrix.c_compiler == 'pocc'
-        uses: Serge3leo/pellesc-setup@v0
+        uses: Serge3leo/pellesc-setup@v1
         with:
-          version: 14.0-rc1-git-lfs
+          # version: 14.10-git-lfs  # default
+          # version: 13.01-git-lfs
           # version: 12.0.2  # WARNING: Needed windows-2022
           verbose: true
 
@@ -248,7 +249,7 @@ jobs:
           if [ "$c_compiler" = "cl" ] ; then
             d="$build_type"
           fi
-          for h in build/hello/$d/hello{,++}{,.exe,.elf} ; do
+          for h in build/{hello/$d/hello{,++},asm/$d/case_asm}{,.exe,.elf} ; do
             if [ -f "$h" ] ; then
               $cross_emul "$h"
             fi

@@ -6,7 +6,9 @@ if (NOT WIN32)
     return ()
 endif ()
 
-if (CMAKE_C_COMPILER_ID STREQUAL OrangeC)
+if (MINGW AND NOT MINGW32CE)  # Need for MSYS2 gcc/clang
+    add_link_options(-municode)
+elseif (CMAKE_C_COMPILER_ID STREQUAL OrangeC)
     if ("${CMAKE_C_COMPILER_VERSION}" VERSION_LESS "7.0")
         message("win32gui: ORC broken before OrangeC 7.0, skip")
         return ()
@@ -18,8 +20,6 @@ if (CMAKE_C_COMPILER_ID STREQUAL OrangeC)
     # - непонятная ошибка с `#include <richedit.h>`, см. `main.rc`;
     # - `orc` отвергает флаг `-I` (CMAKE_INCLUDE_FLAG_RC);
     set(occ_workaround occ_workarond.c)
-elseif (MINGW AND NOT MINGW32CE)  # Need for MSYS2 gcc/clang
-    add_link_options(-municode)
 endif ()
 
 # https://learn.microsoft.com/en-us/cpp/text/unicode-programming-summary
@@ -32,13 +32,19 @@ endif ()
 # При использовании проектов MSVC с генератором `Visual Studio NN YYYY` в
 # полученных проектах уже есть определение обеих символов.
 
+message(VERBOSE "win32gui: CMAKE_C_STANDARD_DEFAULT=${CMAKE_C_STANDARD_DEFAULT}")
+message(VERBOSE "win32gui: CMAKE_C_EXTENSIONS_DEFAULT=${CMAKE_C_EXTENSIONS_DEFAULT}")
+message(VERBOSE "win32gui: CMAKE_C_COMPILE_FEATURES=${CMAKE_C_COMPILE_FEATURES}")
+message(VERBOSE "win32gui: CMAKE_C_STANDARD=${CMAKE_C_STANDARD}")
+message(VERBOSE "win32gui: CMAKE_C_EXTENSIONS=${CMAKE_C_EXTENSIONS}")
+
 add_executable(main main.c main.rc ${occ_workaround})
 target_link_libraries(main Comctl32)
 set_target_properties(main PROPERTIES
                       COMPILE_DEFINITIONS "_UNICODE=1;UNICODE=1"
                       WIN32_EXECUTABLE TRUE
-                      C_EXTENSIONS ON)  # For Pelles C
-if ("${CMAKE_GENERATOR}" MATCHES "Makefiles")
+                      )
+if (NOT CMAKE_CONFIGURATION_TYPES)  # "... Makefiles", "Ninja"
     set(DIR "${CMAKE_CURRENT_BINARY_DIR}")
 else ()
     set(DIR "${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_BUILD_TYPE}")

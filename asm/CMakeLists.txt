@@ -12,19 +12,25 @@
 set(HDRS foo.h)
 
 if (CMAKE_C_COMPILER_ID STREQUAL "MSVC")
-    enable_language(ASM_MASM)  # CMP0194 рекомендует использовать `ml` из VS
+    enable_language(ASM_MASM)  # CMP0194 recommends using `ml` from VS
+elseif (CMAKE_C_COMPILER_ID STREQUAL "PellesC")
+    enable_language(ASM_POASM)
 else ()
     enable_language(ASM)
 endif ()
 
 if (CMAKE_C_COMPILER_ID STREQUAL "LCC")
     set(ASMS foo-elbrus.s)
-elseif (CMAKE_C_COMPILER_ID STREQUAL "MSVC")
-    set(ASMS foo-masm64.asm)
+elseif (CMAKE_C_COMPILER_ID STREQUAL "MSVC" OR
+        CMAKE_C_COMPILER_ID STREQUAL "PellesC")
+    message("CMAKE_SYSTEM_PROCESSOR=${CMAKE_SYSTEM_PROCESSOR}")
+    if (CMAKE_SYSTEM_PROCESSOR MATCHES 64)
+        set(ASMS foo-masm64.asm)  # similar to MASM, but there are deliberate differences
+    else ()
+        set(ASMS foo-masm32.asm)
+    endif ()
 elseif (CMAKE_C_COMPILER_ID STREQUAL "OrangeC")
     set(ASMS foo-nasm32.asm)  # OAsm ... NASM are not 100% compatible with it
-elseif (CMAKE_C_COMPILER_ID STREQUAL "PellesC")
-    set(ASMS foo-masm64.asm)  # similar to MASM, but there are deliberate differences
 elseif (APPLE)
     if (CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64")
         set(ASMS foo-_att-x64.s)
