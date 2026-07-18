@@ -53,6 +53,8 @@ jobs:
           - {c_compiler: suncc}  # TODO: установка для GitHub
           - {c_compiler: tcc}  # TODO: установка для GitHub
           # Давим из конфигурации репозитория
+          # DISABLE= macos-15, macos-15-intel, windows-latest,
+          #          cl, clang, icx, lcc, occ, pgcc, pocc, suncc, tcc,
           - os: ${{ case(contains(vars.DISABLE, ' macos-15,'),
               'macos-15', 'enable-os1') }}
           - os: ${{ case(contains(vars.DISABLE, ' macos-15-intel,'),
@@ -94,8 +96,15 @@ jobs:
           python -m yamllint --list-file .
           python -m yamllint .
 
+      - name: CPUFeature
+        if: runner.os != 'macOS'
+        run: |
+          python -m pip install cpufeature
+          python -c "import cpufeature; cpufeature.print_features()"
+
       - if: matrix.c_compiler == 'cl'
         uses: ilammy/msvc-dev-cmd@v1
+
       - if: matrix.c_compiler == 'icx'
         uses: Serge3leo/oneapi-setup@v0
         with:
@@ -104,7 +113,7 @@ jobs:
 
       - if: matrix.c_compiler == 'lcc'
         uses: Serge3leo/lcc-env-action@lcc-1.29.16
-        #uses: Serge3leo/lcc-env-action@v0
+        # uses: Serge3leo/lcc-env-action@v0
         # with:
         #   lcc_version: 1.27.23
         #   qemu_e2k_version: "1.0"
