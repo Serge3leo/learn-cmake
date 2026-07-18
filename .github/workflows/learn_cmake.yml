@@ -97,6 +97,7 @@ jobs:
           python -m yamllint .
 
       - name: CPUFeature
+        if: matrix.os != 'macos-15'
         run: |
           python -m pip install cpufeature
           python -c "import cpufeature; cpufeature.print_features()"
