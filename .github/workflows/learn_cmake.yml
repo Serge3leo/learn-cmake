@@ -96,8 +96,14 @@ jobs:
           python -m yamllint --list-file .
           python -m yamllint .
 
+      - name: CPUFeature
+        run: |
+          python -m pip install cpufeature
+          python -c "import cpufeature; cpufeature.print_features()"
+          
       - if: matrix.c_compiler == 'cl'
         uses: ilammy/msvc-dev-cmd@v1
+
       - if: matrix.c_compiler == 'icx'
         uses: Serge3leo/oneapi-setup@v0
         with:
@@ -128,8 +134,6 @@ jobs:
       - name: Имена компиляторов с версиями, если необходимо
         shell: bash
         run: |
-          echo cat /proc/cpuinfo
-          cat /proc/cpuinfo || echo "cat FAIL: $?"
           build_type="${{ matrix.build_type }}"
           if [ -z "$build_type" ] ; then
             build_type=Release
